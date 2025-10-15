@@ -1,0 +1,28 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["outputs/**", "dist/**", ".next/**", "build/**"]
+    },
+    "@cloudflare-r2-object-storage-browser/mac#build": {
+      "dependsOn": ["@cloudflare-r2-object-storage-browser/api#build"],
+      "outputs": []
+    },
+    "@cloudflare-r2-object-storage-browser/mac#start": {
+      "dependsOn": ["@cloudflare-r2-object-storage-browser/mac#build"],
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "clean": {
+      "cache": false
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    }
+  }
+}

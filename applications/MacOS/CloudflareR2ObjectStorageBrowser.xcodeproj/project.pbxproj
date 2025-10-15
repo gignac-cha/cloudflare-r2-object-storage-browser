@@ -1,0 +1,503 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CB16C21A43C38B4844AE /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CM16C21A43C38B4844AE /* CacheManager.swift */; };
+		QB92130C5773C2445196 /* QuickLookPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = QL92130C5773C2445196 /* QuickLookPanel.swift */; };
+		
+		DE4635BC23CD21336242E508 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65B035A4F3427346AAB0653 /* Bucket.swift */; };
+		E2B4B08922911210E24FCA6A /* R2Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB514F4E253E650F55F128B2 /* R2Object.swift */; };
+		8F56906AEEAC444C67C88809 /* TransferTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED95539EB92FD05705311E9 /* TransferTask.swift */; };
+		A705542B9E8EBDCE545CB2A7 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB9CF02237DF8122F7F0B20 /* Account.swift */; };
+		CA4AB82FB540F49E0895EE9F /* BucketListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81456CB5448D74131B4762D5 /* BucketListViewModel.swift */; };
+		6E86758164B3DEE8E5450401 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C4E6A656C343FCC9DA3E7 /* FileListViewModel.swift */; };
+		E62CB468E3DB72823D6D9BF7 /* TransferManagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D47D72A6BABA811EBD425 /* TransferManagerViewModel.swift */; };
+		A53A64E75E31C80FF21C592B /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E80958320B1760D45CC822C /* SearchViewModel.swift */; };
+		6C5B967E5CEE86F9319A11F1 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36999E18B08921EF3BF0BE52 /* APIClient.swift */; };
+		CE353852214BD343BE86547C /* FolderCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332B1B5FA84A7F471605C9C7 /* FolderCache.swift */; };
+		C74A2930D36D78DA5E9DED26 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4471F86A1B3A17ADB175E7CF /* LoadingState.swift */; };
+		AF92E07DF75FE31108C8F5C4 /* BucketSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B76E839B450BC5ABF0B64C /* BucketSidebarView.swift */; };
+		10332D240D0DAD230BCB3D1C /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C4BA157CA17764D6B0300 /* FileListView.swift */; };
+		A2ED54E31117966955B2CA9A /* BreadcrumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DA48A13ED8946F83F1B5C3 /* BreadcrumbView.swift */; };
+		E291704242611D41D0B65F9B /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8E199C31DC8BE4A32A4867 /* ToolbarView.swift */; };
+		40D6A66392D0789F53F1B1EB /* DebugPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC922CE2C810A19219E3AB87 /* DebugPanelView.swift */; };
+		8BA5605D541EE935B85ED2AB /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30887C5873D790530DA382F5 /* Colors.swift */; };
+		6D9524C1D4D59B102B3FC165 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629904323E0BD7D62F6C98FA /* Typography.swift */; };
+		4A44E51F552EC95E4C11F7FF /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC8F89DE16A079AFD099950 /* Spacing.swift */; };
+		F822A13465980FAF23263B56 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440DC6E14869EAD32DE52A5F /* Effects.swift */; };
+		75F2008B8C8E65F9A067129D /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2701DB14C7BE34AA3B1FA9 /* Icons.swift */; };
+		FB1FF1B8549CDE6F1608D86A /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EA8507608782AE01FCD7BF /* DesignSystem.swift */; };
+		6B37B8822019E10559B69657 /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79FA7514D108776555B5C2C /* StyleGuide.swift */; };
+		B1000001000000000000001 /* CloudflareR2ObjectStorageBrowserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002000000000000001 /* CloudflareR2ObjectStorageBrowserApp.swift */; };
+		B1000003000000000000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000004000000000000001 /* ContentView.swift */; };
+		B1000021000000000000001 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000022000000000000001 /* ServerManager.swift */; };
+		7A9E1234ABCD567890EF1234 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0F5678DCBA098765FE4567 /* SettingsView.swift */; };
+		9C1D2345BCDE678901FG2345 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2E6789EDCB109876GF5678 /* SettingsManager.swift */; };
+		1A2B3C4D5E6F7890ABCD1234 /* LoadingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E7D6C5B4A3210FEDC5678 /* LoadingOverlayView.swift */; };
+		26DCCFCDDD614D7F84594FD1 /* TransferQueuePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF384743C5340EFAEDCE8E8 /* TransferQueuePanel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CM16C21A43C38B4844AE /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
+		QL92130C5773C2445196 /* QuickLookPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPanel.swift; sourceTree = "<group>"; };
+		
+		D65B035A4F3427346AAB0653 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
+		BB514F4E253E650F55F128B2 /* R2Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = R2Object.swift; sourceTree = "<group>"; };
+		2ED95539EB92FD05705311E9 /* TransferTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferTask.swift; sourceTree = "<group>"; };
+		3CB9CF02237DF8122F7F0B20 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		81456CB5448D74131B4762D5 /* BucketListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketListViewModel.swift; sourceTree = "<group>"; };
+		9A6C4E6A656C343FCC9DA3E7 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
+		2A8D47D72A6BABA811EBD425 /* TransferManagerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferManagerViewModel.swift; sourceTree = "<group>"; };
+		3E80958320B1760D45CC822C /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		36999E18B08921EF3BF0BE52 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		332B1B5FA84A7F471605C9C7 /* FolderCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCache.swift; sourceTree = "<group>"; };
+		4471F86A1B3A17ADB175E7CF /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
+		99B76E839B450BC5ABF0B64C /* BucketSidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketSidebarView.swift; sourceTree = "<group>"; };
+		DD7C4BA157CA17764D6B0300 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
+		F0DA48A13ED8946F83F1B5C3 /* BreadcrumbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbView.swift; sourceTree = "<group>"; };
+		6A8E199C31DC8BE4A32A4867 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
+		AC922CE2C810A19219E3AB87 /* DebugPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPanelView.swift; sourceTree = "<group>"; };
+		30887C5873D790530DA382F5 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		629904323E0BD7D62F6C98FA /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
+		3CC8F89DE16A079AFD099950 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		440DC6E14869EAD32DE52A5F /* Effects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
+		CF2701DB14C7BE34AA3B1FA9 /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
+		41EA8507608782AE01FCD7BF /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		D79FA7514D108776555B5C2C /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
+		B1000005000000000000001 /* CloudflareR2ObjectStorageBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CloudflareR2ObjectStorageBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1000002000000000000001 /* CloudflareR2ObjectStorageBrowserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudflareR2ObjectStorageBrowserApp.swift; sourceTree = "<group>"; };
+		B1000004000000000000001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B1000006000000000000001 /* CloudflareR2ObjectStorageBrowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CloudflareR2ObjectStorageBrowser.entitlements; sourceTree = "<group>"; };
+		B1000022000000000000001 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
+		8B0F5678DCBA098765FE4567 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0A2E6789EDCB109876GF5678 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		9F8E7D6C5B4A3210FEDC5678 /* LoadingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlayView.swift; sourceTree = "<group>"; };
+		FCF384743C5340EFAEDCE8E8 /* TransferQueuePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferQueuePanel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B1000007000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B1000008000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				B1000009000000000000001 /* CloudflareR2ObjectStorageBrowser */,
+				B1000010000000000000001 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B1000009000000000000001 /* CloudflareR2ObjectStorageBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				B1000002000000000000001 /* CloudflareR2ObjectStorageBrowserApp.swift */,
+				B1000004000000000000001 /* ContentView.swift */,
+				B1000022000000000000001 /* ServerManager.swift */,
+				B1000006000000000000001 /* CloudflareR2ObjectStorageBrowser.entitlements */,
+			
+				A30CF0C716710EF05770E5DA /* Models */,
+				04DAEF3A9EC4714FF6C2CC6F /* ViewModels */,
+				CDB6B9C3416C252816BF571B /* Services */,
+				E742D1D0B74D3989B4D14709 /* Utilities */,
+				2B041559529BCE0996B65198 /* Views */,
+				4148BFCBA800A14BA7B0331F /* DesignSystem */,);
+			path = CloudflareR2ObjectStorageBrowser;
+			sourceTree = "<group>";
+		};
+		B1000010000000000000001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1000005000000000000001 /* CloudflareR2ObjectStorageBrowser.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A30CF0C716710EF05770E5DA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D65B035A4F3427346AAB0653 /* Bucket.swift */,
+				BB514F4E253E650F55F128B2 /* R2Object.swift */,
+				2ED95539EB92FD05705311E9 /* TransferTask.swift */,
+				3CB9CF02237DF8122F7F0B20 /* Account.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		04DAEF3A9EC4714FF6C2CC6F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				81456CB5448D74131B4762D5 /* BucketListViewModel.swift */,
+				9A6C4E6A656C343FCC9DA3E7 /* FileListViewModel.swift */,
+				2A8D47D72A6BABA811EBD425 /* TransferManagerViewModel.swift */,
+				3E80958320B1760D45CC822C /* SearchViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CDB6B9C3416C252816BF571B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				36999E18B08921EF3BF0BE52 /* APIClient.swift */,
+				332B1B5FA84A7F471605C9C7 /* FolderCache.swift */,
+				0A2E6789EDCB109876GF5678 /* SettingsManager.swift */,
+				CM16C21A43C38B4844AE /* CacheManager.swift */,
+);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E742D1D0B74D3989B4D14709 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				4471F86A1B3A17ADB175E7CF /* LoadingState.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		2B041559529BCE0996B65198 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				99B76E839B450BC5ABF0B64C /* BucketSidebarView.swift */,
+				DD7C4BA157CA17764D6B0300 /* FileListView.swift */,
+				F0DA48A13ED8946F83F1B5C3 /* BreadcrumbView.swift */,
+				6A8E199C31DC8BE4A32A4867 /* ToolbarView.swift */,
+				AC922CE2C810A19219E3AB87 /* DebugPanelView.swift */,
+				8B0F5678DCBA098765FE4567 /* SettingsView.swift */,
+				9F8E7D6C5B4A3210FEDC5678 /* LoadingOverlayView.swift */,
+				FCF384743C5340EFAEDCE8E8 /* TransferQueuePanel.swift */,
+				QL92130C5773C2445196 /* QuickLookPanel.swift */,
+);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4148BFCBA800A14BA7B0331F /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				30887C5873D790530DA382F5 /* Colors.swift */,
+				629904323E0BD7D62F6C98FA /* Typography.swift */,
+				3CC8F89DE16A079AFD099950 /* Spacing.swift */,
+				440DC6E14869EAD32DE52A5F /* Effects.swift */,
+				CF2701DB14C7BE34AA3B1FA9 /* Icons.swift */,
+				41EA8507608782AE01FCD7BF /* DesignSystem.swift */,
+				D79FA7514D108776555B5C2C /* StyleGuide.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B1000011000000000000001 /* CloudflareR2ObjectStorageBrowser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1000012000000000000001 /* Build configuration list for PBXNativeTarget "CloudflareR2ObjectStorageBrowser" */;
+			buildPhases = (
+				B1000013000000000000001 /* Sources */,
+				B1000007000000000000001 /* Frameworks */,
+				B1000014000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CloudflareR2ObjectStorageBrowser;
+			productName = CloudflareR2ObjectStorageBrowser;
+			productReference = B1000005000000000000001 /* CloudflareR2ObjectStorageBrowser.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B1000015000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					B1000011000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = B1000016000000000000001 /* Build configuration list for PBXProject "CloudflareR2ObjectStorageBrowser" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B1000008000000000000001;
+			productRefGroup = B1000010000000000000001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B1000011000000000000001 /* CloudflareR2ObjectStorageBrowser */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B1000014000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B1000013000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1000003000000000000001 /* ContentView.swift in Sources */,
+				B1000001000000000000001 /* CloudflareR2ObjectStorageBrowserApp.swift in Sources */,
+				B1000021000000000000001 /* ServerManager.swift in Sources */,
+			
+				DE4635BC23CD21336242E508 /* Bucket.swift in Sources */,
+				E2B4B08922911210E24FCA6A /* R2Object.swift in Sources */,
+				8F56906AEEAC444C67C88809 /* TransferTask.swift in Sources */,
+				A705542B9E8EBDCE545CB2A7 /* Account.swift in Sources */,
+				CA4AB82FB540F49E0895EE9F /* BucketListViewModel.swift in Sources */,
+				6E86758164B3DEE8E5450401 /* FileListViewModel.swift in Sources */,
+				E62CB468E3DB72823D6D9BF7 /* TransferManagerViewModel.swift in Sources */,
+				A53A64E75E31C80FF21C592B /* SearchViewModel.swift in Sources */,
+				6C5B967E5CEE86F9319A11F1 /* APIClient.swift in Sources */,
+				CE353852214BD343BE86547C /* FolderCache.swift in Sources */,
+				C74A2930D36D78DA5E9DED26 /* LoadingState.swift in Sources */,
+				AF92E07DF75FE31108C8F5C4 /* BucketSidebarView.swift in Sources */,
+				10332D240D0DAD230BCB3D1C /* FileListView.swift in Sources */,
+				A2ED54E31117966955B2CA9A /* BreadcrumbView.swift in Sources */,
+				E291704242611D41D0B65F9B /* ToolbarView.swift in Sources */,
+				40D6A66392D0789F53F1B1EB /* DebugPanelView.swift in Sources */,
+				8BA5605D541EE935B85ED2AB /* Colors.swift in Sources */,
+				6D9524C1D4D59B102B3FC165 /* Typography.swift in Sources */,
+				4A44E51F552EC95E4C11F7FF /* Spacing.swift in Sources */,
+				F822A13465980FAF23263B56 /* Effects.swift in Sources */,
+				75F2008B8C8E65F9A067129D /* Icons.swift in Sources */,
+				FB1FF1B8549CDE6F1608D86A /* DesignSystem.swift in Sources */,
+				6B37B8822019E10559B69657 /* StyleGuide.swift in Sources */,
+				7A9E1234ABCD567890EF1234 /* SettingsView.swift in Sources */,
+				9C1D2345BCDE678901FG2345 /* SettingsManager.swift in Sources */,
+				1A2B3C4D5E6F7890ABCD1234 /* LoadingOverlayView.swift in Sources */,
+				26DCCFCDDD614D7F84594FD1 /* TransferQueuePanel.swift in Sources */,
+				CB16C21A43C38B4844AE /* CacheManager.swift in Sources */,
+				QB92130C5773C2445196 /* QuickLookPanel.swift in Sources */,
+);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B1000017000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B1000018000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		B1000019000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CloudflareR2ObjectStorageBrowser/CloudflareR2ObjectStorageBrowser.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Cloudflare R2 Browser";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CloudflareR2ObjectStorageBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B1000020000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CloudflareR2ObjectStorageBrowser/CloudflareR2ObjectStorageBrowser.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Cloudflare R2 Browser";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CloudflareR2ObjectStorageBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B1000016000000000000001 /* Build configuration list for PBXProject "CloudflareR2ObjectStorageBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1000017000000000000001 /* Debug */,
+				B1000018000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1000012000000000000001 /* Build configuration list for PBXNativeTarget "CloudflareR2ObjectStorageBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1000019000000000000001 /* Debug */,
+				B1000020000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B1000015000000000000001 /* Project object */;
+}

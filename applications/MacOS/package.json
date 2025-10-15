@@ -1,0 +1,17 @@
+{
+  "name": "@cloudflare-r2-object-storage-browser/mac",
+  "version": "1.0.0",
+  "description": "Cloudflare R2 Object Storage Browser for macOS",
+  "scripts": {
+    "build": "xcodebuild -project CloudflareR2ObjectStorageBrowser.xcodeproj -scheme CloudflareR2ObjectStorageBrowser -configuration Debug -derivedDataPath ./build build",
+    "build:release": "xcodebuild -project CloudflareR2ObjectStorageBrowser.xcodeproj -scheme CloudflareR2ObjectStorageBrowser -configuration Release -derivedDataPath ./build build",
+    "clean": "xcodebuild -project CloudflareR2ObjectStorageBrowser.xcodeproj -scheme CloudflareR2ObjectStorageBrowser clean && rm -rf build",
+    "start": "open build/Build/Products/Debug/CloudflareR2ObjectStorageBrowser.app"
+  },
+  "keywords": ["cloudflare", "r2", "object-storage", "macos", "swift", "swiftui"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cloudflare-r2-object-storage-browser/api": "workspace:*"
+  }
+}

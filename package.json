@@ -1,0 +1,23 @@
+{
+  "name": "cloudflare-r2-object-storage-browser",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "build:api": "turbo run build --filter=@cloudflare-r2-object-storage-browser/api",
+    "build:mac": "turbo run build --filter=@cloudflare-r2-object-storage-browser/mac",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "dev:api": "turbo run dev --filter=@cloudflare-r2-object-storage-browser/api",
+    "start:mac": "turbo run start --filter=@cloudflare-r2-object-storage-browser/mac",
+    "typecheck": "turbo run typecheck"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.2",
+  "devDependencies": {
+    "turbo": "^2.5.8"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "simple-mac-app",
+  "version": "1.0.0",
+  "description": "Simple macOS application",
+  "scripts": {
+    "build": "xcodebuild -project SimpleMacApp.xcodeproj -scheme SimpleMacApp -configuration Debug build",
+    "build:release": "xcodebuild -project SimpleMacApp.xcodeproj -scheme SimpleMacApp -configuration Release build",
+    "open": "open ~/Library/Developer/Xcode/DerivedData/SimpleMacApp-*/Build/Products/Debug/SimpleMacApp.app",
+    "start": "pnpm build && pnpm open",
+    "clean": "xcodebuild -project SimpleMacApp.xcodeproj -scheme SimpleMacApp clean"
+  },
+  "keywords": ["macos", "swift", "swiftui"],
+  "author": "",
+  "license": "ISC"
+}

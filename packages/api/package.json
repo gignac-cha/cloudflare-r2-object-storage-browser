@@ -1,0 +1,33 @@
+{
+  "name": "@cloudflare-r2-object-storage-browser/api",
+  "version": "1.0.0",
+  "description": "API server for Cloudflare R2 Object Storage Browser",
+  "type": "module",
+  "main": "outputs/server.js",
+  "scripts": {
+    "build": "node scripts/build.ts",
+    "dev": "node --watch sources/server.ts",
+    "start": "node outputs/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cloudflare",
+    "r2",
+    "api",
+    "fastify"
+  ],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.2",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.908.0",
+    "@fastify/cors": "^11.1.0",
+    "dotenv": "^17.2.3",
+    "fastify": "^5.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.7.2",
+    "esbuild": "^0.25.10",
+    "typescript": "^5.9.3"
+  }
+}
