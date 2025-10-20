@@ -1,4 +1,10 @@
 packages:
-  - 'SimpleMacApp'
-  - 'applications/MacOS'
-  - 'packages/*'
+  - applications/*
+  - packages/*
+
+enablePrePostScripts: true
+
+onlyBuiltDependencies:
+  - canvas
+  - electron
+  - esbuild

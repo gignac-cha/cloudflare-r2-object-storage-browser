@@ -1,0 +1,311 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   Global Styles
+   ============================================ */
+
+@layer base {
+  /* Reset and Base Styles */
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+    @apply font-sans;
+    @apply overflow-hidden;
+    /* Prevent body scroll in Electron */
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #root {
+    @apply w-full h-full;
+  }
+}
+
+@layer components {
+  /* Custom Scrollbar Styles */
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(156 163 175) transparent;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 dark:bg-gray-600 rounded-full;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500 dark:bg-gray-500;
+  }
+
+  /* Dark scrollbar variant */
+  .scrollbar-dark {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(75 85 99) transparent;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 rounded-full;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600;
+  }
+}
+
+@layer utilities {
+  /* Backdrop Blur Effects */
+  .backdrop-blur-light {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .backdrop-blur-medium {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .backdrop-blur-heavy {
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  /* Glass Morphism Effects */
+  .glass-light {
+    @apply bg-white/70 dark:bg-gray-800/70 backdrop-blur-medium;
+    @apply border border-white/20 dark:border-gray-700/20;
+  }
+
+  .glass-regular {
+    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-heavy;
+    @apply border border-white/30 dark:border-gray-700/30;
+  }
+
+  .glass-dark {
+    @apply bg-gray-900/80 backdrop-blur-heavy;
+    @apply border border-gray-700/30;
+  }
+
+  /* Transition Utilities */
+  .transition-all-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .transition-colors-smooth {
+    @apply transition-colors duration-200 ease-in-out;
+  }
+
+  /* Focus Visible Utilities */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    @apply dark:focus:ring-blue-400 dark:focus:ring-offset-gray-900;
+  }
+
+  /* Text Selection */
+  .select-none-important {
+    user-select: none !important;
+    -webkit-user-select: none !important;
+  }
+
+  /* Draggable Cursor */
+  .cursor-grab-active {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+  }
+}
+
+/* ============================================
+   Component-Specific Styles
+   ============================================ */
+
+/* App Container */
+.app {
+  @apply w-full h-full overflow-hidden;
+}
+
+/* Split Pane Resize Handle */
+.resize-handle {
+  @apply transition-colors duration-150;
+}
+
+.resize-handle:hover {
+  @apply bg-blue-500;
+}
+
+.resize-handle:active {
+  @apply bg-blue-600;
+}
+
+/* Loading Spinner Animation */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+/* Pulse Animation for Server Status */
+@keyframes pulse-subtle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Slide Up Animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* ============================================
+   Dark Mode Enhancements
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  /* Enhance contrast for dark mode */
+  html {
+    color-scheme: dark;
+  }
+
+  /* Custom dark mode selection color */
+  ::selection {
+    @apply bg-blue-600 text-white;
+  }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+  body {
+    @apply bg-white text-black;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   Electron-Specific Fixes
+   ============================================ */
+
+/* Prevent text selection for drag regions */
+.drag-region {
+  -webkit-app-region: drag;
+  @apply select-none-important;
+}
+
+.no-drag-region {
+  -webkit-app-region: no-drag;
+}
+
+/* Window controls area */
+.window-controls {
+  @apply no-drag-region;
+}
+
+/* Fix for frameless window on macOS */
+@supports (-webkit-app-region: drag) {
+  .titlebar {
+    -webkit-app-region: drag;
+    @apply select-none-important;
+  }
+
+  .titlebar button {
+    -webkit-app-region: no-drag;
+  }
+}
+
+/* ============================================
+   Accessibility Enhancements
+   ============================================ */
+
+/* Focus visible for keyboard navigation */
+@media (prefers-reduced-motion: no-preference) {
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-500;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass-light,
+  .glass-regular,
+  .glass-dark {
+    @apply bg-white dark:bg-gray-900;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

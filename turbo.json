@@ -13,6 +13,14 @@
       "dependsOn": ["@cloudflare-r2-object-storage-browser/mac#build"],
       "cache": false
     },
+    "@cloudflare-r2-object-storage-browser/electron#build": {
+      "dependsOn": [],
+      "outputs": ["outputs/**"]
+    },
+    "@cloudflare-r2-object-storage-browser/electron#start": {
+      "dependsOn": ["@cloudflare-r2-object-storage-browser/electron#build"],
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true

@@ -1,0 +1,72 @@
+{
+  "appId": "com.cloudflare.r2browser",
+  "productName": "Cloudflare R2 Browser",
+  "directories": {
+    "output": "release",
+    "buildResources": "build"
+  },
+  "files": [
+    "outputs/**/*",
+    "package.json"
+  ],
+  "extraResources": [
+    {
+      "from": "../../packages/api/outputs",
+      "to": "server",
+      "filter": ["**/*"]
+    }
+  ],
+  "mac": {
+    "category": "public.app-category.productivity",
+    "icon": "build/icon.icns",
+    "target": [
+      {
+        "target": "dir",
+        "arch": ["x64", "arm64"]
+      }
+    ],
+    "identity": null
+  },
+  "dmg": {
+    "contents": [
+      {
+        "x": 130,
+        "y": 220
+      },
+      {
+        "x": 410,
+        "y": 220,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ]
+  },
+  "win": {
+    "icon": "build/icon.ico",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true
+  },
+  "linux": {
+    "icon": "build/icon.png",
+    "target": [
+      "AppImage",
+      "deb",
+      "rpm"
+    ],
+    "category": "Utility"
+  }
+}

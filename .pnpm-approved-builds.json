@@ -1,0 +1,5 @@
+{
+  "electron": true,
+  "esbuild": true,
+  "canvas": false
+}

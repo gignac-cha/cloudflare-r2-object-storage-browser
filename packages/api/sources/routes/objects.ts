@@ -168,6 +168,11 @@ async function listObjectsHandler(
       objects = objects.filter((obj) => obj.size <= maxSize);
     }
 
+    // Extract folders from commonPrefixes
+    const folders = (response.CommonPrefixes ?? [])
+      .map((cp) => cp.Prefix)
+      .filter((p): p is string => p !== undefined);
+
     // Build pagination info
     const pagination = {
       isTruncated: response.IsTruncated ?? false,
@@ -177,12 +182,23 @@ async function listObjectsHandler(
       delimiter: response.Delimiter,
       continuationToken: response.ContinuationToken,
       nextContinuationToken: response.NextContinuationToken,
-      commonPrefixes: (response.CommonPrefixes ?? [])
-        .map((cp) => cp.Prefix)
-        .filter((p): p is string => p !== undefined),
+      commonPrefixes: folders,
     };
 
-    return createPaginatedResponse(reply, 200, objects, pagination);
+    // Return response with objects and folders structure
+    reply.status(200);
+    return {
+      status: 'ok' as const,
+      data: {
+        objects,
+        folders,
+        pagination,
+      },
+      meta: {
+        timestamp: new Date().toISOString(),
+        requestId: request.id,
+      },
+    };
   } catch (error) {
     const appError = mapS3Error(error, {
       bucketName: request.params.bucket,
