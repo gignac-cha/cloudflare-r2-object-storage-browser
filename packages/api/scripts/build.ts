@@ -19,11 +19,22 @@ await build({
   outfile: outputFile,
   bundle: true,
   platform: 'node',
-  target: 'esnext',
+  target: 'node20',
   format: 'esm',
   sourcemap: true,
   minify: false,
-  // Bundle all dependencies for standalone .app deployment
+  // Bundle all npm dependencies but keep Node.js built-ins external
+  external: [
+    'node:*',
+  ],
+  banner: {
+    js: `import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);`,
+  },
 });
 
 console.log(`   ✅ server built successfully at ${outputFile}`);
