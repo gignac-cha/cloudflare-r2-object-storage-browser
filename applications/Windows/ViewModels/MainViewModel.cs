@@ -9,6 +9,7 @@ using CloudflareR2Browser.Models;
 using CloudflareR2Browser.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
 using Windows.UI;
 
 namespace CloudflareR2Browser.ViewModels;
@@ -27,7 +28,7 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     private ServerState _serverState;
     private int? _serverPort;
     private string _serverStatusText = "Disconnected";
-    private Color _serverStatusColor;
+    private SolidColorBrush _serverStatusColor = new(Colors.Gray);
     private bool _isDebugPanelVisible;
     private bool _isTransferQueueVisible;
     private bool _disposed;
@@ -57,7 +58,6 @@ public sealed class MainViewModel : ObservableObject, IDisposable
 
         // Initialize state
         ServerState = ServerState.Stopped;
-        _serverStatusColor = Colors.Red;
 
         // Subscribe to server events
         _serverManager.StateChanged += OnServerStateChanged;
@@ -106,9 +106,9 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     }
 
     /// <summary>
-    /// Gets the server status indicator color.
+    /// Gets the server status indicator brush.
     /// </summary>
-    public Color ServerStatusColor
+    public SolidColorBrush ServerStatusColor
     {
         get => _serverStatusColor;
         private set => SetProperty(ref _serverStatusColor, value);
@@ -267,34 +267,34 @@ public sealed class MainViewModel : ObservableObject, IDisposable
         {
             case ServerState.Stopped:
                 ServerStatusText = "Server stopped";
-                ServerStatusColor = Colors.Gray;
+                ServerStatusColor = new SolidColorBrush(Colors.Gray);
                 break;
 
             case ServerState.Starting:
                 ServerStatusText = "Server starting...";
-                ServerStatusColor = Colors.Orange;
+                ServerStatusColor = new SolidColorBrush(Colors.Orange);
                 break;
 
             case ServerState.Running:
                 ServerStatusText = ServerPort.HasValue
                     ? $"Connected on port {ServerPort}"
                     : "Server running";
-                ServerStatusColor = Colors.Green;
+                ServerStatusColor = new SolidColorBrush(Colors.Green);
                 break;
 
             case ServerState.Stopping:
                 ServerStatusText = "Server stopping...";
-                ServerStatusColor = Colors.Orange;
+                ServerStatusColor = new SolidColorBrush(Colors.Orange);
                 break;
 
             case ServerState.Error:
                 ServerStatusText = "Server error";
-                ServerStatusColor = Colors.Red;
+                ServerStatusColor = new SolidColorBrush(Colors.Red);
                 break;
 
             default:
                 ServerStatusText = "Unknown state";
-                ServerStatusColor = Colors.Gray;
+                ServerStatusColor = new SolidColorBrush(Colors.Gray);
                 break;
         }
 
