@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace CloudflareR2Browser.Models;
 
@@ -72,7 +74,7 @@ public enum TransferStatus
 /// <summary>
 /// Represents a transfer task (upload, download, or delete) in the transfer queue.
 /// </summary>
-public sealed class TransferTask
+public sealed class TransferTask : INotifyPropertyChanged
 {
     /// <summary>
     /// Unique identifier for the transfer task.
@@ -104,40 +106,148 @@ public sealed class TransferTask
     /// </summary>
     public required string BucketName { get; init; }
 
+    private long _totalSize;
+    private int _totalCount = 1;
+    private long _transferredSize;
+    private int _transferredCount;
+    private TransferStatus _status = TransferStatus.Queued;
+    private double _speed;
+    private string? _error;
+    private DateTime? _startedAt;
+    private DateTime? _completedAt;
+
     /// <summary>
     /// Total size in bytes (for file transfers).
     /// </summary>
-    public long TotalSize { get; set; }
+    public long TotalSize
+    {
+        get => _totalSize;
+        set
+        {
+            if (_totalSize != value)
+            {
+                _totalSize = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Progress));
+                OnPropertyChanged(nameof(ProgressPercentage));
+                OnPropertyChanged(nameof(EstimatedTimeRemaining));
+                OnPropertyChanged(nameof(HumanReadableTimeRemaining));
+            }
+        }
+    }
 
     /// <summary>
     /// Total count of items (for batch operations).
     /// </summary>
-    public int TotalCount { get; set; } = 1;
+    public int TotalCount
+    {
+        get => _totalCount;
+        set
+        {
+            if (_totalCount != value)
+            {
+                _totalCount = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Progress));
+                OnPropertyChanged(nameof(ProgressPercentage));
+            }
+        }
+    }
 
     /// <summary>
     /// Number of bytes transferred so far.
     /// </summary>
-    public long TransferredSize { get; set; }
+    public long TransferredSize
+    {
+        get => _transferredSize;
+        set
+        {
+            if (_transferredSize != value)
+            {
+                _transferredSize = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Progress));
+                OnPropertyChanged(nameof(ProgressPercentage));
+                OnPropertyChanged(nameof(EstimatedTimeRemaining));
+                OnPropertyChanged(nameof(HumanReadableTimeRemaining));
+            }
+        }
+    }
 
     /// <summary>
     /// Number of items transferred so far.
     /// </summary>
-    public int TransferredCount { get; set; }
+    public int TransferredCount
+    {
+        get => _transferredCount;
+        set
+        {
+            if (_transferredCount != value)
+            {
+                _transferredCount = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Progress));
+                OnPropertyChanged(nameof(ProgressPercentage));
+            }
+        }
+    }
 
     /// <summary>
     /// Current status of the transfer.
     /// </summary>
-    public TransferStatus Status { get; set; } = TransferStatus.Queued;
+    public TransferStatus Status
+    {
+        get => _status;
+        set
+        {
+            if (_status != value)
+            {
+                _status = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsActive));
+                OnPropertyChanged(nameof(IsTerminal));
+                OnPropertyChanged(nameof(CanRetry));
+                OnPropertyChanged(nameof(CanCancel));
+                OnPropertyChanged(nameof(CanPause));
+                OnPropertyChanged(nameof(CanResume));
+            }
+        }
+    }
 
     /// <summary>
     /// Current transfer speed in bytes per second.
     /// </summary>
-    public double Speed { get; set; }
+    public double Speed
+    {
+        get => _speed;
+        set
+        {
+            if (Math.Abs(_speed - value) > 0.001)
+            {
+                _speed = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HumanReadableSpeed));
+                OnPropertyChanged(nameof(EstimatedTimeRemaining));
+                OnPropertyChanged(nameof(HumanReadableTimeRemaining));
+            }
+        }
+    }
 
     /// <summary>
     /// Error message if the transfer failed.
     /// </summary>
-    public string? Error { get; set; }
+    public string? Error
+    {
+        get => _error;
+        set
+        {
+            if (_error != value)
+            {
+                _error = value;
+                OnPropertyChanged();
+            }
+        }
+    }
 
     /// <summary>
     /// Timestamp when the task was created.
@@ -147,12 +257,38 @@ public sealed class TransferTask
     /// <summary>
     /// Timestamp when the task started (null if not started).
     /// </summary>
-    public DateTime? StartedAt { get; set; }
+    public DateTime? StartedAt
+    {
+        get => _startedAt;
+        set
+        {
+            if (_startedAt != value)
+            {
+                _startedAt = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Duration));
+                OnPropertyChanged(nameof(HumanReadableDuration));
+            }
+        }
+    }
 
     /// <summary>
     /// Timestamp when the task completed (null if not completed).
     /// </summary>
-    public DateTime? CompletedAt { get; set; }
+    public DateTime? CompletedAt
+    {
+        get => _completedAt;
+        set
+        {
+            if (_completedAt != value)
+            {
+                _completedAt = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Duration));
+                OnPropertyChanged(nameof(HumanReadableDuration));
+            }
+        }
+    }
 
     // ========================================================================
     // Computed Properties
@@ -302,4 +438,22 @@ public sealed class TransferTask
     /// Indicates if the task can be resumed.
     /// </summary>
     public bool CanResume => Status is TransferStatus.Paused;
+
+    // ========================================================================
+    // INotifyPropertyChanged Implementation
+    // ========================================================================
+
+    /// <summary>
+    /// Occurs when a property value changes.
+    /// </summary>
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <summary>
+    /// Raises the PropertyChanged event.
+    /// </summary>
+    /// <param name="propertyName">Name of the property that changed.</param>
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 }

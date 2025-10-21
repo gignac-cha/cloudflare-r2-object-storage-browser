@@ -48,6 +48,10 @@ public sealed class TransferManagerViewModel : ObservableObject, IDisposable
         _uploadSemaphore = new SemaphoreSlim(_maxConcurrentUploads, _maxConcurrentUploads);
         _downloadSemaphore = new SemaphoreSlim(_maxConcurrentDownloads, _maxConcurrentDownloads);
 
+        // Subscribe to collection changes for computed properties
+        CompletedTasks.CollectionChanged += (s, e) => OnPropertyChanged(nameof(HasCompletedTasks));
+        FailedTasks.CollectionChanged += (s, e) => OnPropertyChanged(nameof(HasFailedTasks));
+
         // Initialize commands
         PauseTransferCommand = new RelayCommand<Guid>(PauseTransfer, CanPauseTransfer);
         ResumeTransferCommand = new RelayCommand<Guid>(ResumeTransfer, CanResumeTransfer);
@@ -127,6 +131,16 @@ public sealed class TransferManagerViewModel : ObservableObject, IDisposable
     /// Gets the number of active downloads.
     /// </summary>
     public int ActiveDownloadCount => ActiveTasks.Count(t => t.Type == TransferType.Download && t.IsActive);
+
+    /// <summary>
+    /// Gets whether there are any completed tasks.
+    /// </summary>
+    public bool HasCompletedTasks => CompletedTasks.Count > 0;
+
+    /// <summary>
+    /// Gets whether there are any failed tasks.
+    /// </summary>
+    public bool HasFailedTasks => FailedTasks.Count > 0;
 
     // ========================================================================
     // Commands
