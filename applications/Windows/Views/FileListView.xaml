@@ -1,0 +1,196 @@
+<UserControl
+    x:Class="CloudflareR2Browser.Views.FileListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:CloudflareR2Browser.Models"
+    xmlns:viewmodels="using:CloudflareR2Browser.ViewModels"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="800">
+
+    <Grid Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+        <!-- Loading Overlay -->
+        <Grid Background="{ThemeResource LayerFillColorDefaultBrush}"
+              Opacity="0.95"
+              Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+              Canvas.ZIndex="100">
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Spacing="16">
+                <ProgressRing IsActive="True" Width="48" Height="48"/>
+                <TextBlock Text="Loading objects..."
+                           Style="{StaticResource BodyStrongTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Empty State -->
+        <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Spacing="16"
+                    Visibility="{x:Bind ViewModel.Objects.Count, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}">
+            <FontIcon Glyph="&#xE8B7;"
+                      FontSize="64"
+                      Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+            <TextBlock Text="No files yet"
+                       Style="{StaticResource SubtitleTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            <TextBlock Text="Upload files or create folders to get started."
+                       Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                       FontSize="12"
+                       TextAlignment="Center"/>
+        </StackPanel>
+
+        <!-- File/Folder List -->
+        <ListView x:Name="FileListView"
+                  ItemsSource="{x:Bind ViewModel.Objects, Mode=OneWay}"
+                  SelectionMode="Extended"
+                  IsItemClickEnabled="True"
+                  ItemClick="FileListView_ItemClick"
+                  SelectionChanged="FileListView_SelectionChanged"
+                  AutomationProperties.Name="File and folder list"
+                  Padding="0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="12,8"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Height="40"
+                          Background="{ThemeResource LayerFillColorDefaultBrush}"
+                          BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                          BorderThickness="0,0,0,1"
+                          Padding="12,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/> <!-- Icon -->
+                            <ColumnDefinition Width="2*"/> <!-- Name -->
+                            <ColumnDefinition Width="100"/> <!-- Size -->
+                            <ColumnDefinition Width="150"/> <!-- Modified -->
+                            <ColumnDefinition Width="120"/> <!-- Type -->
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Name"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Grid.Column="2"
+                                   Text="Size"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Grid.Column="3"
+                                   Text="Modified"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Grid.Column="4"
+                                   Text="Type"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:R2Object">
+                    <Grid ColumnSpacing="12"
+                          AutomationProperties.Name="{x:Bind Name}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/> <!-- Icon -->
+                            <ColumnDefinition Width="2*"/> <!-- Name -->
+                            <ColumnDefinition Width="100"/> <!-- Size -->
+                            <ColumnDefinition Width="150"/> <!-- Modified -->
+                            <ColumnDefinition Width="120"/> <!-- Type -->
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Preview"
+                                                Icon="View"
+                                                AutomationProperties.Name="Preview file">
+                                    <MenuFlyoutItem.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="Space" />
+                                    </MenuFlyoutItem.KeyboardAccelerators>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Download"
+                                                Icon="Download"
+                                                AutomationProperties.Name="Download file">
+                                    <MenuFlyoutItem.KeyboardAccelerators>
+                                        <KeyboardAccelerator Modifiers="Control" Key="D" />
+                                    </MenuFlyoutItem.KeyboardAccelerators>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem Text="Copy Path"
+                                                Icon="Copy"
+                                                AutomationProperties.Name="Copy file path">
+                                    <MenuFlyoutItem.KeyboardAccelerators>
+                                        <KeyboardAccelerator Modifiers="Control,Shift" Key="C" />
+                                    </MenuFlyoutItem.KeyboardAccelerators>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem Text="Delete"
+                                                Icon="Delete"
+                                                Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                                AutomationProperties.Name="Delete file">
+                                    <MenuFlyoutItem.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="Delete" />
+                                    </MenuFlyoutItem.KeyboardAccelerators>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Grid.ContextFlyout>
+
+                        <!-- File/Folder Icon -->
+                        <FontIcon Grid.Column="0"
+                                  Glyph="{x:Bind Extension, Converter={StaticResource FileIconConverter}}"
+                                  FontSize="20"
+                                  VerticalAlignment="Center"
+                                  Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+
+                        <!-- Name -->
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Bind Name}"
+                                   FontFamily="Consolas"
+                                   FontSize="14"
+                                   VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTipService.ToolTip="{x:Bind Key}"/>
+
+                        <!-- Size -->
+                        <TextBlock Grid.Column="2"
+                                   Text="{x:Bind Size, Converter={StaticResource BytesToStringConverter}}"
+                                   FontSize="13"
+                                   VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+
+                        <!-- Modified -->
+                        <TextBlock Grid.Column="3"
+                                   Text="{x:Bind LastModified, Converter={StaticResource DateToRelativeConverter}}"
+                                   FontSize="13"
+                                   VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+
+                        <!-- Type -->
+                        <TextBlock Grid.Column="4"
+                                   Text="{x:Bind Extension}"
+                                   FontSize="13"
+                                   VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

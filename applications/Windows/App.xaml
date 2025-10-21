@@ -1,0 +1,29 @@
+<Application
+    x:Class="CloudflareR2Browser.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CloudflareR2Browser"
+    xmlns:converters="using:CloudflareR2Browser.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <!-- TODO: Uncomment when resource files are created
+                <ResourceDictionary Source="Resources/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ListStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ColorBrushes.xaml"/>
+                <ResourceDictionary Source="Resources/Icons/SegoeIcons.xaml"/>
+                -->
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:BytesToStringConverter x:Key="BytesToStringConverter"/>
+            <converters:DateToRelativeConverter x:Key="DateToRelativeConverter"/>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+            <converters:FileIconConverter x:Key="FileIconConverter"/>
+            <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
+            <converters:ProgressToStringConverter x:Key="ProgressToStringConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

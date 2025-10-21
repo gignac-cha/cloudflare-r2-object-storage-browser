@@ -1,0 +1,155 @@
+<UserControl
+    x:Class="CloudflareR2Browser.Views.ToolbarView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:CloudflareR2Browser.ViewModels"
+    mc:Ignorable="d"
+    d:DesignHeight="56"
+    d:DesignWidth="800">
+
+    <Grid Background="{ThemeResource LayerFillColorDefaultBrush}"
+          BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+          BorderThickness="0,0,0,1"
+          Height="56"
+          Padding="12,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/> <!-- Navigation buttons -->
+            <ColumnDefinition Width="Auto"/> <!-- Separator -->
+            <ColumnDefinition Width="Auto"/> <!-- Action buttons -->
+            <ColumnDefinition Width="Auto"/> <!-- Separator -->
+            <ColumnDefinition Width="Auto"/> <!-- Refresh button -->
+            <ColumnDefinition Width="*"/> <!-- Spacer -->
+            <ColumnDefinition Width="Auto"/> <!-- Selection counter -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Navigation Group -->
+        <StackPanel Grid.Column="0"
+                    Orientation="Horizontal"
+                    Spacing="4">
+            <!-- Back Button -->
+            <Button Command="{x:Bind ViewModel.NavigateBackCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.CanGoBack, Mode=OneWay}"
+                    ToolTipService.ToolTip="Back"
+                    AutomationProperties.Name="Navigate back"
+                    Style="{StaticResource SubtleButtonStyle}"
+                    Width="40"
+                    Height="40">
+                <FontIcon Glyph="&#xE72B;" FontSize="16"/>
+            </Button>
+
+            <!-- Forward Button -->
+            <Button Command="{x:Bind ViewModel.NavigateForwardCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.CanGoForward, Mode=OneWay}"
+                    ToolTipService.ToolTip="Forward"
+                    AutomationProperties.Name="Navigate forward"
+                    Style="{StaticResource SubtleButtonStyle}"
+                    Width="40"
+                    Height="40">
+                <FontIcon Glyph="&#xE72A;" FontSize="16"/>
+            </Button>
+
+            <!-- Up Button -->
+            <Button Command="{x:Bind ViewModel.NavigateUpCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.CanGoUp, Mode=OneWay}"
+                    ToolTipService.ToolTip="Up one level"
+                    AutomationProperties.Name="Navigate up"
+                    Style="{StaticResource SubtleButtonStyle}"
+                    Width="40"
+                    Height="40">
+                <FontIcon Glyph="&#xE74A;" FontSize="16"/>
+            </Button>
+        </StackPanel>
+
+        <!-- Separator -->
+        <Border Grid.Column="1"
+                Width="1"
+                Height="32"
+                Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                Margin="8,0"/>
+
+        <!-- Action Group -->
+        <StackPanel Grid.Column="2"
+                    Orientation="Horizontal"
+                    Spacing="8">
+            <!-- Upload Button -->
+            <Button x:Name="UploadButton"
+                    ToolTipService.ToolTip="Upload files"
+                    AutomationProperties.Name="Upload files"
+                    Style="{StaticResource AccentButtonStyle}"
+                    Height="36"
+                    Padding="16,0">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE898;" FontSize="16"/>
+                    <TextBlock Text="Upload" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Download Button -->
+            <Button x:Name="DownloadButton"
+                    ToolTipService.ToolTip="Download selected files"
+                    AutomationProperties.Name="Download selected files"
+                    IsEnabled="{x:Bind HasSelectedItems, Mode=OneWay}"
+                    Height="36"
+                    Padding="16,0">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE896;" FontSize="16"/>
+                    <TextBlock Text="Download" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Delete Button -->
+            <Button x:Name="DeleteButton"
+                    ToolTipService.ToolTip="Delete selected files"
+                    AutomationProperties.Name="Delete selected files"
+                    IsEnabled="{x:Bind HasSelectedItems, Mode=OneWay}"
+                    Height="36"
+                    Padding="16,0">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE74D;"
+                              FontSize="16"
+                              Foreground="{ThemeResource SystemFillColorCriticalBrush}"/>
+                    <TextBlock Text="Delete"
+                               VerticalAlignment="Center"
+                               Foreground="{ThemeResource SystemFillColorCriticalBrush}"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!-- Separator -->
+        <Border Grid.Column="3"
+                Width="1"
+                Height="32"
+                Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                Margin="8,0"/>
+
+        <!-- Refresh Button -->
+        <Button Grid.Column="4"
+                Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
+                ToolTipService.ToolTip="Refresh"
+                AutomationProperties.Name="Refresh file list"
+                Style="{StaticResource SubtleButtonStyle}"
+                Width="40"
+                Height="40"
+                Margin="4,0,0,0">
+            <FontIcon Glyph="&#xE72C;" FontSize="16"/>
+        </Button>
+
+        <!-- Selection Counter -->
+        <StackPanel Grid.Column="6"
+                    Orientation="Horizontal"
+                    Spacing="8"
+                    VerticalAlignment="Center"
+                    Visibility="{x:Bind HasSelectedItems, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Border Background="{ThemeResource AccentFillColorDefaultBrush}"
+                    CornerRadius="12"
+                    Padding="12,6">
+                <TextBlock Text="{x:Bind SelectionText, Mode=OneWay}"
+                           FontSize="12"
+                           FontWeight="SemiBold"
+                           Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

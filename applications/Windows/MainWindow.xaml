@@ -1,0 +1,87 @@
+<Window
+    x:Class="CloudflareR2Browser.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CloudflareR2Browser"
+    Title="Cloudflare R2 Object Storage Browser">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Header -->
+            <RowDefinition Height="*"/> <!-- Content -->
+        </Grid.RowDefinitions>
+
+        <!-- Header with server status -->
+        <Grid Grid.Row="0" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="20,16">
+            <StackPanel HorizontalAlignment="Center" Spacing="8">
+                <TextBlock Text="Cloudflare R2 Object Storage Browser"
+                           Style="{StaticResource TitleTextBlockStyle}"/>
+                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                    <Ellipse Width="8" Height="8" Fill="{x:Bind ViewModel.ServerStatusColor, Mode=OneWay}"/>
+                    <TextBlock Text="{x:Bind ViewModel.ServerStatusText, Mode=OneWay}"
+                               FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                <Button Content="Transfer Queue"
+                        Command="{x:Bind ViewModel.ToggleTransferQueueCommand}"/>
+                <Button Content="Debug"
+                        Command="{x:Bind ViewModel.ToggleDebugPanelCommand}"/>
+                <Button Content="Settings"
+                        Command="{x:Bind ViewModel.ShowSettingsCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main content with 2-column layout -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" MinWidth="200" MaxWidth="400"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: Bucket Sidebar (placeholder for BucketSidebarView) -->
+            <Grid Grid.Column="0" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                <TextBlock Text="[Bucket Sidebar View]" Padding="16"/>
+            </Grid>
+
+            <!-- GridSplitter -->
+            <Border Grid.Column="1" Width="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+
+            <!-- Right: Content Area -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- Toolbar -->
+                    <RowDefinition Height="Auto"/> <!-- Breadcrumb -->
+                    <RowDefinition Height="*"/> <!-- File List -->
+                    <RowDefinition Height="Auto"/> <!-- Debug/Transfer Panel -->
+                </Grid.RowDefinitions>
+
+                <!-- Toolbar (placeholder) -->
+                <Border Grid.Row="0" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="12,8">
+                    <TextBlock Text="[Toolbar View]"/>
+                </Border>
+
+                <!-- Breadcrumb (placeholder) -->
+                <Border Grid.Row="1" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" Padding="12,8">
+                    <TextBlock Text="[Breadcrumb View]"/>
+                </Border>
+
+                <!-- File List (placeholder) -->
+                <Grid Grid.Row="2">
+                    <TextBlock Text="[File List View]" Padding="16"/>
+                </Grid>
+
+                <!-- Debug/Transfer Panel (conditionally visible) -->
+                <Border Grid.Row="3" Height="250"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                        BorderThickness="0,1,0,0"
+                        Visibility="{x:Bind ViewModel.IsDebugPanelVisible, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                    <TextBlock Text="[Debug Panel View]" Padding="16"/>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

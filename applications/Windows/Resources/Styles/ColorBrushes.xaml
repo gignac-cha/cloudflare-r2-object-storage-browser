@@ -1,0 +1,206 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ============================================ -->
+    <!-- Brand Colors                                  -->
+    <!-- ============================================ -->
+
+    <!-- Cloudflare Orange -->
+    <Color x:Key="CloudflareOrangeColor">#FF8800</Color>
+    <SolidColorBrush x:Key="CloudflareOrangeBrush" Color="{StaticResource CloudflareOrangeColor}"/>
+
+    <Color x:Key="CloudflareOrangeLightColor">#FFAA33</Color>
+    <SolidColorBrush x:Key="CloudflareOrangeLightBrush" Color="{StaticResource CloudflareOrangeLightColor}"/>
+
+    <Color x:Key="CloudflareOrangeDarkColor">#CC6600</Color>
+    <SolidColorBrush x:Key="CloudflareOrangeDarkBrush" Color="{StaticResource CloudflareOrangeDarkColor}"/>
+
+    <!-- Cloudflare Blue -->
+    <Color x:Key="CloudflareBlueColor">#0078D4</Color>
+    <SolidColorBrush x:Key="CloudflareBlueBrush" Color="{StaticResource CloudflareBlueColor}"/>
+
+    <Color x:Key="CloudflareBlueLightColor">#0090F5</Color>
+    <SolidColorBrush x:Key="CloudflareBlueLightBrush" Color="{StaticResource CloudflareBlueLightColor}"/>
+
+    <Color x:Key="CloudflareBlueDarkColor">#005A9E</Color>
+    <SolidColorBrush x:Key="CloudflareBlueDarkBrush" Color="{StaticResource CloudflareBlueDarkColor}"/>
+
+    <!-- ============================================ -->
+    <!-- Transfer Status Colors                       -->
+    <!-- ============================================ -->
+
+    <!-- Upload (Blue) -->
+    <Color x:Key="UploadActiveColor">#0078D4</Color>
+    <SolidColorBrush x:Key="UploadActiveBrush" Color="{StaticResource UploadActiveColor}"/>
+
+    <Color x:Key="UploadBackgroundColor">#E6F3FF</Color>
+    <SolidColorBrush x:Key="UploadBackgroundBrush" Color="{StaticResource UploadBackgroundColor}"/>
+
+    <!-- Download (Green) -->
+    <Color x:Key="DownloadActiveColor">#107C10</Color>
+    <SolidColorBrush x:Key="DownloadActiveBrush" Color="{StaticResource DownloadActiveColor}"/>
+
+    <Color x:Key="DownloadBackgroundColor">#E6F5E6</Color>
+    <SolidColorBrush x:Key="DownloadBackgroundBrush" Color="{StaticResource DownloadBackgroundColor}"/>
+
+    <!-- Error (Red) -->
+    <Color x:Key="ErrorActiveColor">#D13438</Color>
+    <SolidColorBrush x:Key="ErrorActiveBrush" Color="{StaticResource ErrorActiveColor}"/>
+
+    <Color x:Key="ErrorBackgroundColor">#FDE7E9</Color>
+    <SolidColorBrush x:Key="ErrorBackgroundBrush" Color="{StaticResource ErrorBackgroundColor}"/>
+
+    <!-- Paused (Orange) -->
+    <Color x:Key="PausedActiveColor">#F7630C</Color>
+    <SolidColorBrush x:Key="PausedActiveBrush" Color="{StaticResource PausedActiveColor}"/>
+
+    <Color x:Key="PausedBackgroundColor">#FFF4CE</Color>
+    <SolidColorBrush x:Key="PausedBackgroundBrush" Color="{StaticResource PausedBackgroundColor}"/>
+
+    <!-- Completed (Gray) -->
+    <Color x:Key="CompletedActiveColor">#5B5B5B</Color>
+    <SolidColorBrush x:Key="CompletedActiveBrush" Color="{StaticResource CompletedActiveColor}"/>
+
+    <Color x:Key="CompletedBackgroundColor">#F3F3F3</Color>
+    <SolidColorBrush x:Key="CompletedBackgroundBrush" Color="{StaticResource CompletedBackgroundColor}"/>
+
+    <!-- ============================================ -->
+    <!-- Semantic Colors                              -->
+    <!-- ============================================ -->
+
+    <!-- Success -->
+    <Color x:Key="SuccessColor">#107C10</Color>
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
+
+    <Color x:Key="SuccessBackgroundColor">#DFF6DD</Color>
+    <SolidColorBrush x:Key="SuccessBackgroundBrush" Color="{StaticResource SuccessBackgroundColor}"/>
+
+    <!-- Warning -->
+    <Color x:Key="WarningColor">#FFC83D</Color>
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}"/>
+
+    <Color x:Key="WarningBackgroundColor">#FFF9E5</Color>
+    <SolidColorBrush x:Key="WarningBackgroundBrush" Color="{StaticResource WarningBackgroundColor}"/>
+
+    <!-- Info -->
+    <Color x:Key="InfoColor">#0078D4</Color>
+    <SolidColorBrush x:Key="InfoBrush" Color="{StaticResource InfoColor}"/>
+
+    <Color x:Key="InfoBackgroundColor">#E6F3FF</Color>
+    <SolidColorBrush x:Key="InfoBackgroundBrush" Color="{StaticResource InfoBackgroundColor}"/>
+
+    <!-- ============================================ -->
+    <!-- Background Layers (Light Theme)              -->
+    <!-- ============================================ -->
+
+    <!-- Window Background -->
+    <Color x:Key="WindowBackgroundColor">#F3F3F3</Color>
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}"/>
+
+    <!-- Layer Background (Elevated surface) -->
+    <Color x:Key="LayerBackgroundColor">#FAFAFA</Color>
+    <SolidColorBrush x:Key="LayerBackgroundBrush" Color="{StaticResource LayerBackgroundColor}"/>
+
+    <!-- Card Background (Content container) -->
+    <Color x:Key="CardBackgroundColor">#FFFFFF</Color>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBackgroundColor}"/>
+
+    <!-- Sidebar Background -->
+    <Color x:Key="SidebarBackgroundColor">#F9F9F9</Color>
+    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="{StaticResource SidebarBackgroundColor}"/>
+
+    <!-- Toolbar Background -->
+    <Color x:Key="ToolbarBackgroundColor">#FAFAFA</Color>
+    <SolidColorBrush x:Key="ToolbarBackgroundBrush" Color="{StaticResource ToolbarBackgroundColor}"/>
+
+    <!-- ============================================ -->
+    <!-- Dark Theme Background Layers                 -->
+    <!-- ============================================ -->
+
+    <!-- Window Background Dark -->
+    <Color x:Key="WindowBackgroundDarkColor">#1E1E1E</Color>
+    <SolidColorBrush x:Key="WindowBackgroundDarkBrush" Color="{StaticResource WindowBackgroundDarkColor}"/>
+
+    <!-- Layer Background Dark -->
+    <Color x:Key="LayerBackgroundDarkColor">#252525</Color>
+    <SolidColorBrush x:Key="LayerBackgroundDarkBrush" Color="{StaticResource LayerBackgroundDarkColor}"/>
+
+    <!-- Card Background Dark -->
+    <Color x:Key="CardBackgroundDarkColor">#2D2D2D</Color>
+    <SolidColorBrush x:Key="CardBackgroundDarkBrush" Color="{StaticResource CardBackgroundDarkColor}"/>
+
+    <!-- Sidebar Background Dark -->
+    <Color x:Key="SidebarBackgroundDarkColor">#202020</Color>
+    <SolidColorBrush x:Key="SidebarBackgroundDarkBrush" Color="{StaticResource SidebarBackgroundDarkColor}"/>
+
+    <!-- Toolbar Background Dark -->
+    <Color x:Key="ToolbarBackgroundDarkColor">#2B2B2B</Color>
+    <SolidColorBrush x:Key="ToolbarBackgroundDarkBrush" Color="{StaticResource ToolbarBackgroundDarkColor}"/>
+
+    <!-- ============================================ -->
+    <!-- Dividers & Borders                           -->
+    <!-- ============================================ -->
+
+    <Color x:Key="DividerColor">#E0E0E0</Color>
+    <SolidColorBrush x:Key="DividerBrush" Color="{StaticResource DividerColor}"/>
+
+    <Color x:Key="DividerDarkColor">#3F3F3F</Color>
+    <SolidColorBrush x:Key="DividerDarkBrush" Color="{StaticResource DividerDarkColor}"/>
+
+    <!-- ============================================ -->
+    <!-- File Type Colors                             -->
+    <!-- ============================================ -->
+
+    <!-- Folder -->
+    <Color x:Key="FolderColor">#FFB900</Color>
+    <SolidColorBrush x:Key="FolderBrush" Color="{StaticResource FolderColor}"/>
+
+    <!-- Image -->
+    <Color x:Key="ImageFileColor">#E74856</Color>
+    <SolidColorBrush x:Key="ImageFileBrush" Color="{StaticResource ImageFileColor}"/>
+
+    <!-- Video -->
+    <Color x:Key="VideoFileColor">#8E8CD8</Color>
+    <SolidColorBrush x:Key="VideoFileBrush" Color="{StaticResource VideoFileColor}"/>
+
+    <!-- Audio -->
+    <Color x:Key="AudioFileColor">#00CC6A</Color>
+    <SolidColorBrush x:Key="AudioFileBrush" Color="{StaticResource AudioFileColor}"/>
+
+    <!-- Document -->
+    <Color x:Key="DocumentFileColor">#0078D4</Color>
+    <SolidColorBrush x:Key="DocumentFileBrush" Color="{StaticResource DocumentFileColor}"/>
+
+    <!-- Archive -->
+    <Color x:Key="ArchiveFileColor">#CA5010</Color>
+    <SolidColorBrush x:Key="ArchiveFileBrush" Color="{StaticResource ArchiveFileColor}"/>
+
+    <!-- Code -->
+    <Color x:Key="CodeFileColor">#00B7C3</Color>
+    <SolidColorBrush x:Key="CodeFileBrush" Color="{StaticResource CodeFileColor}"/>
+
+    <!-- Generic File -->
+    <Color x:Key="GenericFileColor">#737373</Color>
+    <SolidColorBrush x:Key="GenericFileBrush" Color="{StaticResource GenericFileColor}"/>
+
+    <!-- ============================================ -->
+    <!-- Utility Colors                               -->
+    <!-- ============================================ -->
+
+    <!-- Overlay/Scrim -->
+    <Color x:Key="OverlayColor">#80000000</Color>
+    <SolidColorBrush x:Key="OverlayBrush" Color="{StaticResource OverlayColor}"/>
+
+    <!-- Focus Border -->
+    <Color x:Key="FocusBorderColor">#0078D4</Color>
+    <SolidColorBrush x:Key="FocusBorderBrush" Color="{StaticResource FocusBorderColor}"/>
+
+    <!-- Selection Background -->
+    <Color x:Key="SelectionBackgroundColor">#E6F3FF</Color>
+    <SolidColorBrush x:Key="SelectionBackgroundBrush" Color="{StaticResource SelectionBackgroundColor}"/>
+
+    <Color x:Key="SelectionBackgroundDarkColor">#1F3A5F</Color>
+    <SolidColorBrush x:Key="SelectionBackgroundDarkBrush" Color="{StaticResource SelectionBackgroundDarkColor}"/>
+
+</ResourceDictionary>

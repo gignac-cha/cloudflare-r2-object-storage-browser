@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="CloudflareR2Browser.Dialogs.SettingsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="R2 Settings"
+    PrimaryButtonText="Save"
+    SecondaryButtonText="Cancel"
+    DefaultButton="Primary"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    Style="{StaticResource DefaultContentDialogStyle}">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="600">
+        <StackPanel Spacing="20" Padding="0,8,0,0">
+
+            <!-- Error InfoBar -->
+            <InfoBar
+                x:Name="ErrorInfoBar"
+                Severity="Error"
+                IsOpen="False"
+                IsClosable="True"
+                Title="Validation Error"
+                Message="Please check the form fields below." />
+
+            <!-- Cloudflare R2 Credentials Section -->
+            <StackPanel Spacing="16">
+                <TextBlock
+                    Text="Cloudflare R2 Credentials"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    FontWeight="SemiBold" />
+
+                <Border
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
+
+                    <StackPanel Spacing="16">
+                        <!-- Account ID -->
+                        <StackPanel Spacing="4">
+                            <TextBlock
+                                Text="Account ID"
+                                FontWeight="SemiBold" />
+                            <TextBox
+                                x:Name="AccountIdTextBox"
+                                PlaceholderText="Enter your Cloudflare Account ID"
+                                Text="{x:Bind ViewModel.AccountId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock
+                                Text="Found in Cloudflare Dashboard → R2 Overview"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Style="{StaticResource CaptionTextBlockStyle}" />
+                        </StackPanel>
+
+                        <!-- Access Key ID -->
+                        <StackPanel Spacing="4">
+                            <TextBlock
+                                Text="Access Key ID"
+                                FontWeight="SemiBold" />
+                            <TextBox
+                                x:Name="AccessKeyIdTextBox"
+                                PlaceholderText="Enter your R2 Access Key ID"
+                                Text="{x:Bind ViewModel.AccessKeyId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock
+                                Text="Generated from R2 → Manage R2 API Tokens"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Style="{StaticResource CaptionTextBlockStyle}" />
+                        </StackPanel>
+
+                        <!-- Secret Access Key -->
+                        <StackPanel Spacing="4">
+                            <TextBlock
+                                Text="Secret Access Key"
+                                FontWeight="SemiBold" />
+                            <PasswordBox
+                                x:Name="SecretAccessKeyPasswordBox"
+                                PlaceholderText="Enter your R2 Secret Access Key"
+                                Password="{x:Bind ViewModel.SecretAccessKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock
+                                Text="Keep this secret! Only shown once when generated."
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Style="{StaticResource CaptionTextBlockStyle}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Advanced Section (Optional) -->
+            <StackPanel Spacing="12">
+                <TextBlock
+                    Text="Advanced"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    FontWeight="SemiBold" />
+
+                <StackPanel Spacing="4">
+                    <TextBlock
+                        Text="Custom Endpoint (Optional)"
+                        FontWeight="SemiBold" />
+                    <TextBox
+                        x:Name="EndpointTextBox"
+                        PlaceholderText="https://your-account-id.r2.cloudflarestorage.com"
+                        Text="{x:Bind ViewModel.CustomEndpoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Text="Leave empty to use default R2 endpoint"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Clear All Button -->
+            <StackPanel Spacing="12">
+                <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+                <Button
+                    x:Name="ClearAllButton"
+                    Content="Clear All Credentials"
+                    Click="ClearAllButton_Click"
+                    HorizontalAlignment="Left">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                            <Setter Property="Background" Value="{ThemeResource SystemFillColorCriticalBackgroundBrush}" />
+                            <Setter Property="Foreground" Value="{ThemeResource SystemFillColorCriticalBrush}" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <TextBlock
+                    Text="This will remove all stored credentials from your system."
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}" />
+            </StackPanel>
+
+            <!-- Help Section -->
+            <InfoBar
+                Severity="Informational"
+                IsOpen="True"
+                IsClosable="False"
+                Title="Need help?"
+                Message="Visit the Cloudflare R2 documentation to learn how to create API tokens and find your Account ID." />
+        </StackPanel>
+    </ScrollViewer>
+</ContentDialog>
