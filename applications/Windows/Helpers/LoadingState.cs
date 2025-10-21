@@ -33,7 +33,7 @@ public abstract record LoadingState<T>
         /// <summary>
         /// Gets the exception that caused the failure.
         /// </summary>
-        public Exception Error { get; init; }
+        public new Exception Error { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the Failed state.
