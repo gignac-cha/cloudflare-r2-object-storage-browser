@@ -1,3 +1,5 @@
+using System;
+
 namespace CloudflareR2Browser.Helpers;
 
 /// <summary>

@@ -1,29 +1,9 @@
 #nullable enable
 
-using CloudflareR2Browser.Models;
+using System;
+using System.Collections.Generic;
 
 namespace CloudflareR2Browser.Models;
-
-/// <summary>
-/// Simplified response for object listing used by ViewModels.
-/// </summary>
-public sealed class ObjectsResponse
-{
-    /// <summary>
-    /// List of objects in the current folder/prefix.
-    /// </summary>
-    public required List<R2Object> Objects { get; init; }
-
-    /// <summary>
-    /// Pagination information.
-    /// </summary>
-    public required Pagination Pagination { get; init; }
-
-    /// <summary>
-    /// List of folder prefixes (common prefixes).
-    /// </summary>
-    public required List<string> CommonPrefixes { get; init; }
-}
 
 /// <summary>
 /// Internal response data for object listing.
@@ -206,27 +186,6 @@ public sealed class SearchMeta
     /// Search time in milliseconds.
     /// </summary>
     public double SearchTime { get; init; }
-}
-
-/// <summary>
-/// Presigned URL response.
-/// </summary>
-public sealed class PresignedUrlResponse
-{
-    /// <summary>
-    /// Object key.
-    /// </summary>
-    public required string Key { get; init; }
-
-    /// <summary>
-    /// Presigned URL.
-    /// </summary>
-    public required string Url { get; init; }
-
-    /// <summary>
-    /// Expiration time in seconds.
-    /// </summary>
-    public int ExpiresIn { get; init; }
 }
 
 /// <summary>
