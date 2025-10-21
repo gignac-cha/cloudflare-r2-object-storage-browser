@@ -15,9 +15,9 @@ public sealed partial class ToolbarView : UserControl, INotifyPropertyChanged
     private string _selectionText = "";
 
     /// <summary>
-    /// Gets or sets the ViewModel for this view.
+    /// Gets the ViewModel from DataContext.
     /// </summary>
-    public FileListViewModel ViewModel { get; set; }
+    public FileListViewModel? ViewModel => DataContext as FileListViewModel;
 
     /// <summary>
     /// Gets whether there are selected items.
@@ -57,21 +57,20 @@ public sealed partial class ToolbarView : UserControl, INotifyPropertyChanged
     public ToolbarView()
     {
         this.InitializeComponent();
-        ViewModel = null!; // Will be set via dependency injection
-    }
 
-    /// <summary>
-    /// Sets the ViewModel and initializes the view.
-    /// </summary>
-    /// <param name="viewModel">The FileListViewModel instance.</param>
-    public void Initialize(FileListViewModel viewModel)
-    {
-        ViewModel = viewModel;
-
-        // Subscribe to selection changes
-        ViewModel.SelectedObjects.CollectionChanged += (s, e) =>
+        // Subscribe to DataContext changes
+        this.DataContextChanged += (s, e) =>
         {
-            UpdateSelectionState();
+            OnPropertyChanged(nameof(ViewModel));
+
+            if (ViewModel != null)
+            {
+                // Subscribe to selection changes
+                ViewModel.SelectedObjects.CollectionChanged += (s, e) =>
+                {
+                    UpdateSelectionState();
+                };
+            }
         };
     }
 
@@ -80,6 +79,8 @@ public sealed partial class ToolbarView : UserControl, INotifyPropertyChanged
     /// </summary>
     private void UpdateSelectionState()
     {
+        if (ViewModel == null) return;
+
         var count = ViewModel.SelectedObjects.Count;
         HasSelectedItems = count > 0;
         SelectionText = count == 1 ? "1 item selected" : $"{count} items selected";

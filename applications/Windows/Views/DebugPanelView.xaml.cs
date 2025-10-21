@@ -14,9 +14,9 @@ public sealed partial class DebugPanelView : UserControl, INotifyPropertyChanged
     private int _selectedTabIndex;
 
     /// <summary>
-    /// Gets or sets the ViewModel for this view.
+    /// Gets the ViewModel from DataContext.
     /// </summary>
-    public DebugPanelViewModel ViewModel { get; set; }
+    public DebugPanelViewModel? ViewModel => DataContext as DebugPanelViewModel;
 
     /// <summary>
     /// Gets or sets the selected tab index.
@@ -31,10 +31,13 @@ public sealed partial class DebugPanelView : UserControl, INotifyPropertyChanged
                 _selectedTabIndex = value;
                 OnPropertyChanged();
 
-                // Update ViewModel selected tab
-                ViewModel.SelectedTab = value == 0
-                    ? DebugPanelTab.ApiResponses
-                    : DebugPanelTab.ServerLogs;
+                // Update ViewModel selected tab if ViewModel is available
+                if (ViewModel != null)
+                {
+                    ViewModel.SelectedTab = value == 0
+                        ? DebugPanelTab.ApiResponses
+                        : DebugPanelTab.ServerLogs;
+                }
             }
         }
     }
@@ -45,19 +48,18 @@ public sealed partial class DebugPanelView : UserControl, INotifyPropertyChanged
     public DebugPanelView()
     {
         this.InitializeComponent();
-        ViewModel = null!; // Will be set via dependency injection
-    }
 
-    /// <summary>
-    /// Sets the ViewModel and initializes the view.
-    /// </summary>
-    /// <param name="viewModel">The DebugPanelViewModel instance.</param>
-    public void Initialize(DebugPanelViewModel viewModel)
-    {
-        ViewModel = viewModel;
+        // Listen to DataContext changes
+        this.DataContextChanged += (s, e) =>
+        {
+            OnPropertyChanged(nameof(ViewModel));
 
-        // Sync tab selection
-        SelectedTabIndex = ViewModel.SelectedTab == DebugPanelTab.ApiResponses ? 0 : 1;
+            // Sync tab selection when ViewModel is set
+            if (ViewModel != null)
+            {
+                SelectedTabIndex = ViewModel.SelectedTab == DebugPanelTab.ApiResponses ? 0 : 1;
+            }
+        };
     }
 
     #region INotifyPropertyChanged

@@ -10,9 +10,9 @@ namespace CloudflareR2Browser.Views;
 public sealed partial class BucketSidebarView : UserControl
 {
     /// <summary>
-    /// Gets or sets the ViewModel for this view.
+    /// Gets the ViewModel from DataContext.
     /// </summary>
-    public BucketSidebarViewModel ViewModel { get; set; }
+    public BucketSidebarViewModel? ViewModel => DataContext as BucketSidebarViewModel;
 
     /// <summary>
     /// Initializes a new instance of the BucketSidebarView class.
@@ -21,20 +21,13 @@ public sealed partial class BucketSidebarView : UserControl
     {
         this.InitializeComponent();
 
-        // ViewModel will be set via dependency injection or data context
-        // This enables x:Bind to work properly
-        ViewModel = null!; // Will be set before use
-    }
-
-    /// <summary>
-    /// Sets the ViewModel and initializes the view.
-    /// </summary>
-    /// <param name="viewModel">The BucketSidebarViewModel instance.</param>
-    public void Initialize(BucketSidebarViewModel viewModel)
-    {
-        ViewModel = viewModel;
-
-        // Load buckets on initialization
-        _ = ViewModel.LoadBucketsAsync();
+        // Load buckets when DataContext is set
+        this.DataContextChanged += async (s, e) =>
+        {
+            if (ViewModel != null)
+            {
+                await ViewModel.LoadBucketsAsync();
+            }
+        };
     }
 }

@@ -10,9 +10,9 @@ namespace CloudflareR2Browser.Views;
 public sealed partial class TransferQueuePanel : UserControl
 {
     /// <summary>
-    /// Gets or sets the ViewModel for this view.
+    /// Gets the ViewModel from DataContext.
     /// </summary>
-    public TransferManagerViewModel ViewModel { get; set; }
+    public TransferManagerViewModel? ViewModel => DataContext as TransferManagerViewModel;
 
     /// <summary>
     /// Initializes a new instance of the TransferQueuePanel class.
@@ -20,15 +20,5 @@ public sealed partial class TransferQueuePanel : UserControl
     public TransferQueuePanel()
     {
         this.InitializeComponent();
-        ViewModel = null!; // Will be set via dependency injection
-    }
-
-    /// <summary>
-    /// Sets the ViewModel and initializes the view.
-    /// </summary>
-    /// <param name="viewModel">The TransferManagerViewModel instance.</param>
-    public void Initialize(TransferManagerViewModel viewModel)
-    {
-        ViewModel = viewModel;
     }
 }

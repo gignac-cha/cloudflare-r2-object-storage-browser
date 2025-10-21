@@ -12,9 +12,9 @@ namespace CloudflareR2Browser.Views;
 public sealed partial class FileListView : UserControl
 {
     /// <summary>
-    /// Gets or sets the ViewModel for this view.
+    /// Gets the ViewModel from DataContext.
     /// </summary>
-    public FileListViewModel ViewModel { get; set; }
+    public FileListViewModel? ViewModel => DataContext as FileListViewModel;
 
     /// <summary>
     /// Initializes a new instance of the FileListView class.
@@ -22,16 +22,6 @@ public sealed partial class FileListView : UserControl
     public FileListView()
     {
         this.InitializeComponent();
-        ViewModel = null!; // Will be set via dependency injection
-    }
-
-    /// <summary>
-    /// Sets the ViewModel and initializes the view.
-    /// </summary>
-    /// <param name="viewModel">The FileListViewModel instance.</param>
-    public void Initialize(FileListViewModel viewModel)
-    {
-        ViewModel = viewModel;
     }
 
     /// <summary>
@@ -39,6 +29,8 @@ public sealed partial class FileListView : UserControl
     /// </summary>
     private void FileListView_ItemClick(object sender, ItemClickEventArgs e)
     {
+        if (ViewModel == null) return;
+
         if (e.ClickedItem is R2Object obj)
         {
             // If it's a folder, navigate into it
@@ -59,6 +51,8 @@ public sealed partial class FileListView : UserControl
     /// </summary>
     private void FileListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        if (ViewModel == null) return;
+
         ViewModel.SelectedObjects.Clear();
         foreach (var item in ObjectListView.SelectedItems.Cast<R2Object>())
         {

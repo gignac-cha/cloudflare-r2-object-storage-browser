@@ -16,9 +16,9 @@ public sealed partial class BreadcrumbView : UserControl, INotifyPropertyChanged
     private List<string> _breadcrumbItems = new();
 
     /// <summary>
-    /// Gets or sets the ViewModel for this view.
+    /// Gets the ViewModel from DataContext.
     /// </summary>
-    public FileListViewModel ViewModel { get; set; }
+    public FileListViewModel? ViewModel => DataContext as FileListViewModel;
 
     /// <summary>
     /// Gets the breadcrumb items for display.
@@ -42,22 +42,21 @@ public sealed partial class BreadcrumbView : UserControl, INotifyPropertyChanged
     public BreadcrumbView()
     {
         this.InitializeComponent();
-        ViewModel = null!; // Will be set via dependency injection
-    }
 
-    /// <summary>
-    /// Sets the ViewModel and initializes the view.
-    /// </summary>
-    /// <param name="viewModel">The FileListViewModel instance.</param>
-    public void Initialize(FileListViewModel viewModel)
-    {
-        ViewModel = viewModel;
+        // Subscribe to DataContext changes
+        this.DataContextChanged += (s, e) =>
+        {
+            OnPropertyChanged(nameof(ViewModel));
 
-        // Subscribe to property changes
-        ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            if (ViewModel != null)
+            {
+                // Subscribe to property changes
+                ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
-        // Initial update
-        UpdateBreadcrumbs();
+                // Initial update
+                UpdateBreadcrumbs();
+            }
+        };
     }
 
     /// <summary>
@@ -65,8 +64,8 @@ public sealed partial class BreadcrumbView : UserControl, INotifyPropertyChanged
     /// </summary>
     private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModel.CurrentBucket) ||
-            e.PropertyName == nameof(ViewModel.CurrentPath))
+        if (e.PropertyName == nameof(FileListViewModel.CurrentBucket) ||
+            e.PropertyName == nameof(FileListViewModel.CurrentPath))
         {
             UpdateBreadcrumbs();
         }
@@ -77,6 +76,8 @@ public sealed partial class BreadcrumbView : UserControl, INotifyPropertyChanged
     /// </summary>
     private void UpdateBreadcrumbs()
     {
+        if (ViewModel == null) return;
+
         var items = new List<string>();
 
         // Add home icon
@@ -104,6 +105,8 @@ public sealed partial class BreadcrumbView : UserControl, INotifyPropertyChanged
     /// </summary>
     private void PathBreadcrumb_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
     {
+        if (ViewModel == null) return;
+
         var index = args.Index;
 
         if (index == 0)
