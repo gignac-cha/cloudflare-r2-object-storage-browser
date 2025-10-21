@@ -23,18 +23,10 @@ await build({
   format: 'esm',
   sourcemap: true,
   minify: false,
-  // Bundle all npm dependencies but keep Node.js built-ins external
+  // Keep Node.js built-ins external (always available in runtime)
   external: [
     'node:*',
   ],
-  banner: {
-    js: `import { createRequire } from 'module';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-const require = createRequire(import.meta.url);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);`,
-  },
 });
 
 console.log(`   ✅ server built successfully at ${outputFile}`);
