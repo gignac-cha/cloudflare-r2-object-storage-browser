@@ -293,8 +293,8 @@ public sealed class MainViewModel : ObservableObject, IDisposable
             // Get the main window through App.Current
             if (Microsoft.UI.Xaml.Application.Current is App app && app.MainWindow is MainWindow mainWindow)
             {
-                // Create SettingsViewModel from DI
-                var settingsViewModel = new SettingsViewModel(_settingsManager);
+                // Get SettingsViewModel from DI
+                var settingsViewModel = App.GetService<SettingsViewModel>();
 
                 // Create and show SettingsDialog
                 var dialog = new Dialogs.SettingsDialog(settingsViewModel)
