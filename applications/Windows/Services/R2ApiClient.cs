@@ -94,7 +94,7 @@ public sealed class R2ApiClient : IDisposable
     /// <summary>
     /// Lists objects in a bucket with optional filtering.
     /// </summary>
-    public async Task<ObjectsResponse> ListObjectsAsync(
+    public async Task<ListObjectsResult> ListObjectsAsync(
         string bucketName,
         string? prefix = null,
         string? delimiter = "/",
@@ -114,7 +114,7 @@ public sealed class R2ApiClient : IDisposable
 
         try
         {
-            var response = await _httpClient.GetFromJsonAsync<ApiResponse<ObjectsResponseData>>(
+            var response = await _httpClient.GetFromJsonAsync<ObjectsResponse>(
                 url,
                 _jsonOptions,
                 cancellationToken);
@@ -122,17 +122,17 @@ public sealed class R2ApiClient : IDisposable
             if (response?.Status == "ok" && response.Data != null)
             {
                 _logger.LogInformation("Retrieved {Count} objects from bucket {Bucket}",
-                    response.Data.Pagination?.KeyCount ?? 0, bucketName);
+                    response.Pagination?.KeyCount ?? 0, bucketName);
 
-                return new ObjectsResponse
+                return new ListObjectsResult
                 {
-                    Objects = response.Data.Data ?? new List<R2Object>(),
-                    Pagination = response.Data.Pagination ?? new Pagination(),
-                    CommonPrefixes = response.Data.Pagination?.CommonPrefixes ?? new List<string>()
+                    Objects = response.Data ?? new List<R2Object>(),
+                    Pagination = response.Pagination,
+                    CommonPrefixes = response.Pagination?.CommonPrefixes ?? new List<string>()
                 };
             }
 
-            throw new R2ApiException($"Failed to list objects in bucket '{bucketName}'", response?.Error);
+            throw new R2ApiException($"Failed to list objects in bucket '{bucketName}'");
         }
         catch (HttpRequestException ex)
         {
@@ -514,7 +514,7 @@ public sealed class R2ApiClient : IDisposable
 
         try
         {
-            var response = await _httpClient.GetFromJsonAsync<ApiResponse<PresignedUrlResponse>>(
+            var response = await _httpClient.GetFromJsonAsync<PresignedUrlResponse>(
                 url,
                 _jsonOptions,
                 cancellationToken);
@@ -525,7 +525,7 @@ public sealed class R2ApiClient : IDisposable
                 return response.Data.Url;
             }
 
-            throw new R2ApiException($"Failed to get presigned URL for '{objectKey}'", response?.Error);
+            throw new R2ApiException($"Failed to get presigned URL for '{objectKey}'");
         }
         catch (HttpRequestException ex)
         {

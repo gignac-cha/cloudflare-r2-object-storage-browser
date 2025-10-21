@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace CloudflareR2Browser.Models;
@@ -261,6 +262,27 @@ public sealed record PaginationInfo
     /// </summary>
     [JsonPropertyName("commonPrefixes")]
     public List<string>? CommonPrefixes { get; init; }
+}
+
+/// <summary>
+/// Simplified result for listing objects (used internally by R2ApiClient).
+/// </summary>
+public sealed record ListObjectsResult
+{
+    /// <summary>
+    /// List of objects in the response.
+    /// </summary>
+    public required List<R2Object> Objects { get; init; }
+
+    /// <summary>
+    /// List of common prefixes (folders).
+    /// </summary>
+    public required List<string> CommonPrefixes { get; init; }
+
+    /// <summary>
+    /// Pagination information.
+    /// </summary>
+    public required PaginationInfo Pagination { get; init; }
 }
 
 /// <summary>

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using CloudflareR2Browser.Services;
 using CloudflareR2Browser.ViewModels;
 
@@ -15,6 +16,16 @@ public partial class App : Application
 {
     private Window? _mainWindow;
     private IServiceProvider? _serviceProvider;
+
+    /// <summary>
+    /// Gets the current App instance.
+    /// </summary>
+    public static new App Current => (App)Application.Current;
+
+    /// <summary>
+    /// Gets the main application window.
+    /// </summary>
+    public Window? MainWindow => _mainWindow;
 
     /// <summary>
     /// Initializes the singleton application object. This is the first line of authored code
@@ -117,17 +128,15 @@ public partial class App : Application
 
         // Load settings
         var settingsManager = Services.GetRequiredService<SettingsManager>();
-        await settingsManager.LoadAsync();
-
-        var credentials = settingsManager.GetCredentials();
+        var hasCredentials = settingsManager.LoadCredentials();
 
         // Start Node.js server
         var serverManager = Services.GetRequiredService<NodeServerManager>();
 
-        if (credentials != null)
+        if (hasCredentials)
         {
             logger.LogInformation("Starting server with saved credentials");
-            await serverManager.StartServerAsync(credentials);
+            await serverManager.StartServerAsync();
 
             // Wait for server to be ready (max 10 seconds)
             var timeout = TimeSpan.FromSeconds(10);
@@ -142,9 +151,9 @@ public partial class App : Application
             {
                 logger.LogInformation("Server started on port {Port}", serverManager.ServerPort.Value);
 
-                // Initialize API client with server port
+                // Set API client server port
                 var apiClient = Services.GetRequiredService<R2ApiClient>();
-                apiClient.Initialize(serverManager.ServerPort.Value);
+                apiClient.ServerPort = serverManager.ServerPort.Value;
             }
             else
             {
@@ -156,9 +165,7 @@ public partial class App : Application
             logger.LogInformation("No saved credentials found. Server will start when credentials are provided.");
         }
 
-        // Initialize cache manager
-        var cacheManager = Services.GetRequiredService<CacheManager>();
-        await cacheManager.InitializeAsync();
+        // CacheManager initializes in constructor, no need to call InitializeAsync
 
         // Activate main window
         _mainWindow.Activate();

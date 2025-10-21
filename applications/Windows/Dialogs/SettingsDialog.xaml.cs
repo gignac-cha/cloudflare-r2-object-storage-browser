@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using CloudflareR2Browser.Helpers;
 using CloudflareR2Browser.ViewModels;
 using System;
 using System.Threading.Tasks;
@@ -13,10 +14,10 @@ namespace CloudflareR2Browser.Dialogs
     {
         public SettingsViewModel ViewModel { get; }
 
-        public SettingsDialog()
+        public SettingsDialog(SettingsViewModel viewModel)
         {
             this.InitializeComponent();
-            ViewModel = new SettingsViewModel();
+            ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
 
             // Load existing credentials
             LoadCredentials();
@@ -25,11 +26,11 @@ namespace CloudflareR2Browser.Dialogs
         /// <summary>
         /// Load existing credentials from settings
         /// </summary>
-        private async void LoadCredentials()
+        private void LoadCredentials()
         {
             try
             {
-                await ViewModel.LoadCredentialsAsync();
+                ViewModel.LoadExistingCredentials();
             }
             catch (Exception ex)
             {
@@ -58,10 +59,19 @@ namespace CloudflareR2Browser.Dialogs
                     return;
                 }
 
-                // Save credentials
-                var success = await ViewModel.SaveCredentialsAsync();
+                // Save credentials using the SaveCommand
+                if (ViewModel.SaveCommand is AsyncRelayCommand saveCommand)
+                {
+                    await saveCommand.ExecuteAsync(null);
 
-                if (!success)
+                    // Check if there's an error message
+                    if (!string.IsNullOrEmpty(ViewModel.ErrorMessage))
+                    {
+                        ShowError(ViewModel.ErrorMessage);
+                        args.Cancel = true;
+                    }
+                }
+                else
                 {
                     ShowError("Failed to save credentials. Please check your input and try again.");
                     args.Cancel = true;
@@ -107,13 +117,16 @@ namespace CloudflareR2Browser.Dialogs
             {
                 try
                 {
-                    await ViewModel.ClearCredentialsAsync();
+                    // Clear credentials using the ClearCommand
+                    if (ViewModel.ClearCommand is AsyncRelayCommand clearCommand)
+                    {
+                        await clearCommand.ExecuteAsync(null);
+                    }
 
                     // Clear the form fields
                     AccountIdTextBox.Text = string.Empty;
                     AccessKeyIdTextBox.Text = string.Empty;
                     SecretAccessKeyPasswordBox.Password = string.Empty;
-                    EndpointTextBox.Text = string.Empty;
 
                     var successDialog = new ContentDialog
                     {
@@ -182,18 +195,6 @@ namespace CloudflareR2Browser.Dialogs
                 ShowError("Secret Access Key appears to be invalid. Please check and try again.");
                 SecretAccessKeyPasswordBox.Focus(FocusState.Programmatic);
                 return false;
-            }
-
-            // Validate custom endpoint if provided
-            if (!string.IsNullOrWhiteSpace(ViewModel.CustomEndpoint))
-            {
-                if (!Uri.TryCreate(ViewModel.CustomEndpoint, UriKind.Absolute, out var uri) ||
-                    (uri.Scheme != "http" && uri.Scheme != "https"))
-                {
-                    ShowError("Custom endpoint must be a valid HTTP or HTTPS URL.");
-                    EndpointTextBox.Focus(FocusState.Programmatic);
-                    return false;
-                }
             }
 
             return true;
