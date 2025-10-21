@@ -9,6 +9,7 @@ using CloudflareR2Browser.Models;
 using CloudflareR2Browser.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
 
@@ -24,6 +25,7 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     private readonly NodeServerManager _serverManager;
     private readonly R2ApiClient _apiClient;
     private readonly SettingsManager _settingsManager;
+    private readonly DispatcherQueue? _dispatcherQueue;
 
     private ServerState _serverState;
     private int? _serverPort;
@@ -64,6 +66,9 @@ public sealed class MainViewModel : ObservableObject, IDisposable
         FileListViewModel = fileListViewModel ?? throw new ArgumentNullException(nameof(fileListViewModel));
         TransferManagerViewModel = transferManagerViewModel ?? throw new ArgumentNullException(nameof(transferManagerViewModel));
         DebugPanelViewModel = debugPanelViewModel ?? throw new ArgumentNullException(nameof(debugPanelViewModel));
+
+        // Get UI thread dispatcher
+        _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         // Initialize commands
         ToggleDebugPanelCommand = new RelayCommand(ToggleDebugPanel);
@@ -369,8 +374,20 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     /// </summary>
     private void OnServerStateChanged(object? sender, ServerState newState)
     {
-        ServerState = newState;
-        _logger.LogInformation("Server state changed to: {State}", newState);
+        // Ensure we're on the UI thread
+        if (_dispatcherQueue != null && !_dispatcherQueue.HasThreadAccess)
+        {
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                ServerState = newState;
+                _logger.LogInformation("Server state changed to: {State}", newState);
+            });
+        }
+        else
+        {
+            ServerState = newState;
+            _logger.LogInformation("Server state changed to: {State}", newState);
+        }
     }
 
     /// <summary>
@@ -378,9 +395,22 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     /// </summary>
     private void OnServerPortDetected(object? sender, int port)
     {
-        ServerPort = port;
-        _apiClient.ServerPort = port;
-        _logger.LogInformation("Server port detected: {Port}", port);
+        // Ensure we're on the UI thread
+        if (_dispatcherQueue != null && !_dispatcherQueue.HasThreadAccess)
+        {
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                ServerPort = port;
+                _apiClient.ServerPort = port;
+                _logger.LogInformation("Server port detected: {Port}", port);
+            });
+        }
+        else
+        {
+            ServerPort = port;
+            _apiClient.ServerPort = port;
+            _logger.LogInformation("Server port detected: {Port}", port);
+        }
     }
 
     /// <summary>
@@ -388,13 +418,30 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     /// </summary>
     private void OnServerLogReceived(object? sender, string log)
     {
-        // Add to logs collection (limit to last 1000 entries)
-        if (ServerLogs.Count >= 1000)
+        // Ensure we're on the UI thread
+        if (_dispatcherQueue != null && !_dispatcherQueue.HasThreadAccess)
         {
-            ServerLogs.RemoveAt(0);
-        }
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                // Add to logs collection (limit to last 1000 entries)
+                if (ServerLogs.Count >= 1000)
+                {
+                    ServerLogs.RemoveAt(0);
+                }
 
-        ServerLogs.Add($"[{DateTime.Now:HH:mm:ss}] {log}");
+                ServerLogs.Add($"[{DateTime.Now:HH:mm:ss}] {log}");
+            });
+        }
+        else
+        {
+            // Add to logs collection (limit to last 1000 entries)
+            if (ServerLogs.Count >= 1000)
+            {
+                ServerLogs.RemoveAt(0);
+            }
+
+            ServerLogs.Add($"[{DateTime.Now:HH:mm:ss}] {log}");
+        }
     }
 
     // ========================================================================

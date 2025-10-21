@@ -120,8 +120,11 @@ public partial class App : Application
         var logger = Services.GetRequiredService<ILogger<App>>();
         logger.LogInformation("Initializing Cloudflare R2 Browser application");
 
-        // Create main window first (needed for dialogs)
+        // Create main window first (needed for dialogs and UI context)
         _mainWindow = Services.GetRequiredService<MainWindow>();
+
+        // Activate window to establish UI thread context
+        _mainWindow.Activate();
 
         // Load settings
         var settingsManager = Services.GetRequiredService<SettingsManager>();
@@ -161,11 +164,6 @@ public partial class App : Application
         {
             logger.LogInformation("No saved credentials found. Server will start when credentials are provided.");
         }
-
-        // CacheManager initializes in constructor, no need to call InitializeAsync
-
-        // Activate main window
-        _mainWindow.Activate();
     }
 
     /// <summary>
