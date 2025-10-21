@@ -23,8 +23,7 @@ await build({
   format: 'esm',
   sourcemap: true,
   minify: false,
-  packages: 'external', // External: node_modules
-  // Don't use 'external: routes' - bundle everything from sources/
+  // Bundle all dependencies for standalone .app deployment
 });
 
 console.log(`   ✅ server built successfully at ${outputFile}`);
