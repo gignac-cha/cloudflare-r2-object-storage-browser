@@ -242,8 +242,8 @@ class ServerManager: ObservableObject {
     }
 
     private func getServerScriptPath() -> String {
-        // 1. 프로덕션: 앱 번들 내부
-        if let bundlePath = Bundle.main.path(forResource: "server", ofType: "js") {
+        // 1. 프로덕션: 앱 번들 내부 (.cjs)
+        if let bundlePath = Bundle.main.path(forResource: "server", ofType: "cjs") {
             addLog("Using bundled server script: \(bundlePath)")
             return bundlePath
         }
@@ -255,7 +255,7 @@ class ServerManager: ObservableObject {
         // 2-1. 앱 번들 기준 상대 경로 (Xcode에서 실행할 때)
         if let executablePath = Bundle.main.executablePath {
             // executablePath: .../DerivedData/.../Debug/App.app/Contents/MacOS/App
-            // 목표: .../cloudflare-r2-object-storage-browser/packages/api/outputs/server.js
+            // 목표: .../cloudflare-r2-object-storage-browser/packages/api/outputs/server.cjs
             let appPath = (executablePath as NSString).deletingLastPathComponent // MacOS
             let contentsPath = (appPath as NSString).deletingLastPathComponent // Contents
             let appBundlePath = (contentsPath as NSString).deletingLastPathComponent // App.app
@@ -268,18 +268,18 @@ class ServerManager: ObservableObject {
             projectRoot = (projectRoot as NSString).deletingLastPathComponent
             projectRoot = (projectRoot as NSString).deletingLastPathComponent
 
-            candidatePaths.append("\(projectRoot)/packages/api/outputs/server.js")
+            candidatePaths.append("\(projectRoot)/packages/api/outputs/server.cjs")
         }
 
         // 2-2. 현재 작업 디렉토리 기준
         let currentDir = fm.currentDirectoryPath
-        candidatePaths.append("\(currentDir)/../../packages/api/outputs/server.js")
-        candidatePaths.append("\(currentDir)/../../../packages/api/outputs/server.js")
-        candidatePaths.append("\(currentDir)/packages/api/outputs/server.js")
+        candidatePaths.append("\(currentDir)/../../packages/api/outputs/server.cjs")
+        candidatePaths.append("\(currentDir)/../../../packages/api/outputs/server.cjs")
+        candidatePaths.append("\(currentDir)/packages/api/outputs/server.cjs")
 
         // 2-3. 홈 디렉토리 기준 (마지막 수단)
         let homeDir = fm.homeDirectoryForCurrentUser.path
-        candidatePaths.append("\(homeDir)/projects/cloudflare-r2-object-storage-browser/packages/api/outputs/server.js")
+        candidatePaths.append("\(homeDir)/projects/cloudflare-r2-object-storage-browser/packages/api/outputs/server.cjs")
 
         // 존재하는 첫 번째 경로 사용
         for path in candidatePaths {

@@ -28,18 +28,18 @@ echo "✅ App built successfully"
 RESOURCES_DIR="${APP_PATH}/Contents/Resources"
 mkdir -p "$RESOURCES_DIR"
 
-# Copy server.js from API package
-API_SERVER="../../packages/api/outputs/server.js"
+# Copy server.cjs from API package
+API_SERVER="../../packages/api/outputs/server.cjs"
 
 if [ ! -f "$API_SERVER" ]; then
-  echo "⚠️  Warning: server.js not found at $API_SERVER"
+  echo "⚠️  Warning: server.cjs not found at $API_SERVER"
   echo "   Run 'pnpm build:api' first to build the API server"
   exit 1
 fi
 
-echo "📦 Copying server.js into app bundle..."
-cp "$API_SERVER" "$RESOURCES_DIR/server.js"
+echo "📦 Copying server.cjs into app bundle..."
+cp "$API_SERVER" "$RESOURCES_DIR/server.cjs"
 
-echo "✅ server.js copied to $RESOURCES_DIR/server.js"
+echo "✅ server.cjs copied to $RESOURCES_DIR/server.cjs"
 echo ""
 echo "🎉 Build complete: $APP_PATH"
