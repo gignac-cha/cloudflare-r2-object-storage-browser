@@ -40,16 +40,30 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     /// <param name="serverManager">Node server manager.</param>
     /// <param name="apiClient">R2 API client.</param>
     /// <param name="settingsManager">Settings manager.</param>
+    /// <param name="bucketSidebarViewModel">Bucket sidebar view model.</param>
+    /// <param name="fileListViewModel">File list view model.</param>
+    /// <param name="transferManagerViewModel">Transfer manager view model.</param>
+    /// <param name="debugPanelViewModel">Debug panel view model.</param>
     public MainViewModel(
         ILogger<MainViewModel> logger,
         NodeServerManager serverManager,
         R2ApiClient apiClient,
-        SettingsManager settingsManager)
+        SettingsManager settingsManager,
+        BucketSidebarViewModel bucketSidebarViewModel,
+        FileListViewModel fileListViewModel,
+        TransferManagerViewModel transferManagerViewModel,
+        DebugPanelViewModel debugPanelViewModel)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _serverManager = serverManager ?? throw new ArgumentNullException(nameof(serverManager));
         _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
+
+        // Store child ViewModels
+        BucketSidebarViewModel = bucketSidebarViewModel ?? throw new ArgumentNullException(nameof(bucketSidebarViewModel));
+        FileListViewModel = fileListViewModel ?? throw new ArgumentNullException(nameof(fileListViewModel));
+        TransferManagerViewModel = transferManagerViewModel ?? throw new ArgumentNullException(nameof(transferManagerViewModel));
+        DebugPanelViewModel = debugPanelViewModel ?? throw new ArgumentNullException(nameof(debugPanelViewModel));
 
         // Initialize commands
         ToggleDebugPanelCommand = new RelayCommand(ToggleDebugPanel);
@@ -113,6 +127,26 @@ public sealed class MainViewModel : ObservableObject, IDisposable
         get => _serverStatusColor;
         private set => SetProperty(ref _serverStatusColor, value);
     }
+
+    /// <summary>
+    /// Gets the bucket sidebar view model.
+    /// </summary>
+    public BucketSidebarViewModel BucketSidebarViewModel { get; }
+
+    /// <summary>
+    /// Gets the file list view model.
+    /// </summary>
+    public FileListViewModel FileListViewModel { get; }
+
+    /// <summary>
+    /// Gets the transfer manager view model.
+    /// </summary>
+    public TransferManagerViewModel TransferManagerViewModel { get; }
+
+    /// <summary>
+    /// Gets the debug panel view model.
+    /// </summary>
+    public DebugPanelViewModel DebugPanelViewModel { get; }
 
     /// <summary>
     /// Gets whether the server is currently running.
@@ -253,9 +287,34 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     private async Task ShowSettingsAsync()
     {
         _logger.LogInformation("Opening settings dialog...");
-        // This will be implemented by the View
-        // For now, just log
-        await Task.CompletedTask;
+
+        try
+        {
+            // Get the main window through App.Current
+            if (Microsoft.UI.Xaml.Application.Current is App app && app.MainWindow is MainWindow mainWindow)
+            {
+                // Create SettingsViewModel from DI
+                var settingsViewModel = new SettingsViewModel(_settingsManager);
+
+                // Create and show SettingsDialog
+                var dialog = new Dialogs.SettingsDialog(settingsViewModel)
+                {
+                    XamlRoot = mainWindow.Content.XamlRoot
+                };
+
+                await dialog.ShowAsync();
+
+                _logger.LogInformation("Settings dialog closed");
+            }
+            else
+            {
+                _logger.LogError("Could not get main window to show settings dialog");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error showing settings dialog");
+        }
     }
 
     /// <summary>

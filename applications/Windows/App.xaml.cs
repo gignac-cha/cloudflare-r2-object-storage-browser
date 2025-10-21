@@ -63,12 +63,14 @@ public partial class App : Application
         services.AddSingleton<CacheManager>();
         services.AddSingleton<FolderCache>();
 
-        // ViewModels
-        services.AddSingleton<MainViewModel>();
+        // ViewModels (all Singleton to be shared across the application)
+        services.AddSingleton<BucketSidebarViewModel>();
+        services.AddSingleton<FileListViewModel>();
         services.AddSingleton<TransferManagerViewModel>();
         services.AddSingleton<DebugPanelViewModel>();
-        services.AddTransient<BucketSidebarViewModel>();
-        services.AddTransient<FileListViewModel>();
+        services.AddSingleton<MainViewModel>();
+
+        // Transient ViewModels (created on demand)
         services.AddTransient<SettingsViewModel>();
 
         // Windows
