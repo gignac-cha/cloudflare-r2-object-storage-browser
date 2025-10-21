@@ -12,34 +12,38 @@
  * - Search objects by name
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import {
+  DeleteObjectCommand,
+  DeleteObjectsCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { r2Client } from '../r2-client.ts';
 import type {
+  BatchDeleteBody,
   BucketParams,
-  ObjectParams,
-  ListObjectsQuery,
-  SearchQuery,
   DownloadQuery,
   FolderDeleteQuery,
-  BatchDeleteBody,
+  ListObjectsQuery,
+  ObjectParams,
+  PresignedUrlQuery,
   S3Object,
+  SearchQuery,
   SearchResult,
   StorageClass,
 } from '../types/api.ts';
 import {
-  ListObjectsV2Command,
-  HeadObjectCommand,
-  GetObjectCommand,
-  PutObjectCommand,
-  DeleteObjectCommand,
-  DeleteObjectsCommand,
-} from '@aws-sdk/client-s3';
-import { r2Client } from '../r2-client.ts';
-import { mapS3Error, createMissingQueryError, createMissingParamError, createInvalidParamError, createInvalidKeyError } from '../utils/errors.ts';
-import {
-  createSuccessResponse,
-  createErrorResponse,
-  createPaginatedResponse,
-} from '../utils/response.ts';
+  createInvalidKeyError,
+  createInvalidParamError,
+  createMissingParamError,
+  createMissingQueryError,
+  mapS3Error,
+} from '../utils/errors.ts';
+import { createErrorResponse, createSuccessResponse } from '../utils/response.ts';
 
 // ============================================================================
 // Route Registration
@@ -52,28 +56,13 @@ export async function registerObjectRoutes(server: FastifyInstance) {
     Querystring: ListObjectsQuery;
   }>('/buckets/:bucket/objects', listObjectsHandler);
 
-  // Get object metadata (no body)
-  server.head<{
-    Params: ObjectParams;
-  }>('/buckets/:bucket/objects/*', headObjectHandler);
-
-  // Download object with streaming
+  // Search objects by name (register before wildcard routes)
   server.get<{
-    Params: ObjectParams;
-    Querystring: DownloadQuery;
-  }>('/buckets/:bucket/objects/*', getObjectHandler);
+    Params: BucketParams;
+    Querystring: SearchQuery;
+  }>('/buckets/:bucket/search', searchObjectsHandler);
 
-  // Upload object with streaming
-  server.put<{
-    Params: ObjectParams;
-  }>('/buckets/:bucket/objects/*', putObjectHandler);
-
-  // Delete object
-  server.delete<{
-    Params: ObjectParams;
-  }>('/buckets/:bucket/objects/*', deleteObjectHandler);
-
-  // Batch delete multiple objects
+  // Batch delete multiple objects (register before wildcard routes)
   server.delete<{
     Params: BucketParams;
     Body: BatchDeleteBody;
@@ -85,11 +74,27 @@ export async function registerObjectRoutes(server: FastifyInstance) {
     Querystring: FolderDeleteQuery;
   }>('/buckets/:bucket/folders', deleteFolderHandler);
 
-  // Search objects by name
+  // Wildcard routes must be registered last
+  // Get object metadata (no body)
+  server.head<{
+    Params: ObjectParams;
+  }>('/buckets/:bucket/objects/*', headObjectHandler);
+
+  // Download object with streaming (handles both download and presigned URL generation)
   server.get<{
-    Params: BucketParams;
-    Querystring: SearchQuery;
-  }>('/buckets/:bucket/search', searchObjectsHandler);
+    Params: ObjectParams;
+    Querystring: DownloadQuery & PresignedUrlQuery & { presigned?: boolean };
+  }>('/buckets/:bucket/objects/*', getObjectHandler);
+
+  // Upload object with streaming
+  server.put<{
+    Params: ObjectParams;
+  }>('/buckets/:bucket/objects/*', putObjectHandler);
+
+  // Delete object
+  server.delete<{
+    Params: ObjectParams;
+  }>('/buckets/:bucket/objects/*', deleteObjectHandler);
 }
 
 // ============================================================================
@@ -109,16 +114,8 @@ async function listObjectsHandler(
 ) {
   try {
     const { bucket } = request.params;
-    const {
-      prefix,
-      delimiter,
-      maxKeys,
-      continuationToken,
-      modifiedAfter,
-      modifiedBefore,
-      minSize,
-      maxSize,
-    } = request.query;
+    const { prefix, delimiter, maxKeys, continuationToken, modifiedAfter, modifiedBefore, minSize, maxSize } =
+      request.query;
 
     // Validate bucket name
     if (!bucket) {
@@ -148,16 +145,12 @@ async function listObjectsHandler(
     // Apply client-side filters (modifiedAfter, modifiedBefore, minSize, maxSize)
     if (modifiedAfter) {
       const afterDate = new Date(modifiedAfter);
-      objects = objects.filter(
-        (obj) => new Date(obj.lastModified) > afterDate
-      );
+      objects = objects.filter((obj) => new Date(obj.lastModified) > afterDate);
     }
 
     if (modifiedBefore) {
       const beforeDate = new Date(modifiedBefore);
-      objects = objects.filter(
-        (obj) => new Date(obj.lastModified) < beforeDate
-      );
+      objects = objects.filter((obj) => new Date(obj.lastModified) < beforeDate);
     }
 
     if (minSize !== undefined) {
@@ -169,9 +162,7 @@ async function listObjectsHandler(
     }
 
     // Extract folders from commonPrefixes
-    const folders = (response.CommonPrefixes ?? [])
-      .map((cp) => cp.Prefix)
-      .filter((p): p is string => p !== undefined);
+    const folders = (response.CommonPrefixes ?? []).map((cp) => cp.Prefix).filter((p): p is string => p !== undefined);
 
     // Build pagination info
     const pagination = {
@@ -203,13 +194,7 @@ async function listObjectsHandler(
     const appError = mapS3Error(error, {
       bucketName: request.params.bucket,
     });
-    return createErrorResponse(
-      reply,
-      appError.statusCode,
-      appError.code,
-      appError.message,
-      appError.details
-    );
+    return createErrorResponse(reply, appError.statusCode, appError.code, appError.message, appError.details);
   }
 }
 
@@ -246,16 +231,10 @@ async function headObjectHandler(
     reply.status(200);
     reply.header('Content-Type', response.ContentType ?? 'application/octet-stream');
     reply.header('Content-Length', String(response.ContentLength ?? 0));
-    reply.header(
-      'Last-Modified',
-      response.LastModified?.toUTCString() ?? ''
-    );
+    reply.header('Last-Modified', response.LastModified?.toUTCString() ?? '');
     reply.header('ETag', response.ETag ?? '');
     reply.header('Accept-Ranges', 'bytes');
-    reply.header(
-      'X-Amz-Storage-Class',
-      response.StorageClass ?? 'STANDARD'
-    );
+    reply.header('X-Amz-Storage-Class', response.StorageClass ?? 'STANDARD');
 
     return reply.send();
   } catch (error) {
@@ -265,31 +244,26 @@ async function headObjectHandler(
       bucketName: bucket,
       objectKey: key,
     });
-    return createErrorResponse(
-      reply,
-      appError.statusCode,
-      appError.code,
-      appError.message,
-      appError.details
-    );
+    return createErrorResponse(reply, appError.statusCode, appError.code, appError.message, appError.details);
   }
 }
 
 /**
- * Download object with streaming support
+ * Download object with streaming support OR generate presigned URL
  * GET /buckets/:bucket/objects/*
+ * GET /buckets/:bucket/objects/*?presigned=true&expiresIn=3600
  */
 async function getObjectHandler(
   request: FastifyRequest<{
     Params: ObjectParams;
-    Querystring: DownloadQuery;
+    Querystring: DownloadQuery & PresignedUrlQuery & { presigned?: boolean };
   }>,
   reply: FastifyReply
 ) {
   try {
     const { bucket } = request.params;
     const key = extractObjectKey(request.url);
-    const { range } = request.query;
+    const { range, presigned, expiresIn = 3600 } = request.query;
 
     if (!bucket) {
       throw createMissingParamError('bucket');
@@ -298,6 +272,37 @@ async function getObjectHandler(
       throw createMissingParamError('key');
     }
 
+    // If presigned=true, generate presigned URL instead of downloading
+    if (presigned === true || presigned === 'true') {
+      // Validate expiresIn (max 7 days = 604800 seconds)
+      const expiresInNum = typeof expiresIn === 'string' ? parseInt(expiresIn, 10) : expiresIn;
+      if (expiresInNum < 1 || expiresInNum > 604800) {
+        throw createInvalidParamError('expiresIn', 'number between 1 and 604800', expiresIn);
+      }
+
+      // Create GetObjectCommand for presigned URL
+      const command = new GetObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      });
+
+      // Generate presigned URL
+      const url = await getSignedUrl(r2Client, command, {
+        expiresIn: expiresInNum,
+      });
+
+      // Calculate expiration timestamp
+      const expiresAt = new Date(Date.now() + expiresInNum * 1000).toISOString();
+
+      return createSuccessResponse(reply, 200, {
+        key,
+        url,
+        expiresIn: expiresInNum,
+        expiresAt,
+      });
+    }
+
+    // Normal download flow
     // Call R2 GetObject
     const command = new GetObjectCommand({
       Bucket: bucket,
@@ -314,20 +319,11 @@ async function getObjectHandler(
     reply.status(range ? 206 : 200);
     reply.header('Content-Type', response.ContentType ?? 'application/octet-stream');
     reply.header('Content-Length', String(response.ContentLength ?? 0));
-    reply.header(
-      'Content-Disposition',
-      `attachment; filename="${encodeURIComponent(filename)}"`
-    );
-    reply.header(
-      'Last-Modified',
-      response.LastModified?.toUTCString() ?? ''
-    );
+    reply.header('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
+    reply.header('Last-Modified', response.LastModified?.toUTCString() ?? '');
     reply.header('ETag', response.ETag ?? '');
     reply.header('Accept-Ranges', 'bytes');
-    reply.header(
-      'X-Amz-Storage-Class',
-      response.StorageClass ?? 'STANDARD'
-    );
+    reply.header('X-Amz-Storage-Class', response.StorageClass ?? 'STANDARD');
 
     if (range && response.ContentRange) {
       reply.header('Content-Range', response.ContentRange);
@@ -348,13 +344,7 @@ async function getObjectHandler(
       bucketName: bucket,
       objectKey: key,
     });
-    return createErrorResponse(
-      reply,
-      appError.statusCode,
-      appError.code,
-      appError.message,
-      appError.details
-    );
+    return createErrorResponse(reply, appError.statusCode, appError.code, appError.message, appError.details);
   }
 }
 
@@ -385,8 +375,7 @@ async function putObjectHandler(
     }
 
     // Get Content-Type from headers
-    const contentType =
-      request.headers['content-type'] ?? 'application/octet-stream';
+    const contentType = request.headers['content-type'] ?? 'application/octet-stream';
     const contentLength = request.headers['content-length'];
 
     // Call R2 PutObject with streaming body
@@ -422,13 +411,7 @@ async function putObjectHandler(
       bucketName: bucket,
       objectKey: key,
     });
-    return createErrorResponse(
-      reply,
-      appError.statusCode,
-      appError.code,
-      appError.message,
-      appError.details
-    );
+    return createErrorResponse(reply, appError.statusCode, appError.code, appError.message, appError.details);
   }
 }
 
@@ -472,13 +455,7 @@ async function deleteObjectHandler(
       bucketName: bucket,
       objectKey: key,
     });
-    return createErrorResponse(
-      reply,
-      appError.statusCode,
-      appError.code,
-      appError.message,
-      appError.details
-    );
+    return createErrorResponse(reply, appError.statusCode, appError.code, appError.message, appError.details);
   }
 }
 
@@ -513,11 +490,7 @@ async function batchDeleteObjectsHandler(
     }
 
     if (keys.length > 1000) {
-      throw createInvalidParamError(
-        'keys',
-        'array with max 1000 items',
-        `${keys.length} items`
-      );
+      throw createInvalidParamError('keys', 'array with max 1000 items', `${keys.length} items`);
     }
 
     // Validate each key is a non-empty string
@@ -561,13 +534,7 @@ async function batchDeleteObjectsHandler(
     const appError = mapS3Error(error, {
       bucketName: bucket,
     });
-    return createErrorResponse(
-      reply,
-      appError.statusCode,
-      appError.code,
-      appError.message,
-      appError.details
-    );
+    return createErrorResponse(reply, appError.statusCode, appError.code, appError.message, appError.details);
   }
 }
 
@@ -670,13 +637,7 @@ async function deleteFolderHandler(
       bucketName: bucket,
       objectKey: prefix,
     });
-    return createErrorResponse(
-      reply,
-      appError.statusCode,
-      appError.code,
-      appError.message,
-      appError.details
-    );
+    return createErrorResponse(reply, appError.statusCode, appError.code, appError.message, appError.details);
   }
 }
 
@@ -744,8 +705,7 @@ async function searchObjectsHandler(
       });
 
     // Apply maxKeys limit to search results
-    const limitedMatches =
-      maxKeys !== undefined ? matches.slice(0, maxKeys) : matches.slice(0, 100);
+    const limitedMatches = maxKeys !== undefined ? matches.slice(0, maxKeys) : matches.slice(0, 100);
 
     // Calculate search time
     const searchTime = (Date.now() - startTime) / 1000;
@@ -781,13 +741,7 @@ async function searchObjectsHandler(
     const appError = mapS3Error(error, {
       bucketName: bucket,
     });
-    return createErrorResponse(
-      reply,
-      appError.statusCode,
-      appError.code,
-      appError.message,
-      appError.details
-    );
+    return createErrorResponse(reply, appError.statusCode, appError.code, appError.message, appError.details);
   }
 }
 

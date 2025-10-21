@@ -1,11 +1,5 @@
 import dotenv from 'dotenv';
-import { readFileSync, existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
-import { homedir } from 'node:os';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { join } from 'node:path';
 
 // Try to load from config file first, then fall back to .env
 interface R2Config {
@@ -58,7 +52,19 @@ function loadR2Config(): R2Config {
   }
 
   // Third priority: .env file (for development)
-  dotenv.config({ path: join(__dirname, '../../../.env') });
+  // Try multiple possible .env locations for bundled vs development environments
+  const possibleEnvPaths = [
+    join(process.cwd(), '.env'),
+    join(process.cwd(), '../../.env'),
+    join(process.cwd(), '../../../.env'),
+  ];
+
+  for (const envPath of possibleEnvPaths) {
+    dotenv.config({ path: envPath });
+    if (process.env.R2_ACCESS_KEY_ID && process.env.R2_SECRET_ACCESS_KEY && process.env.R2_ENDPOINT) {
+      break;
+    }
+  }
 
   const endpoint = process.env.R2_ENDPOINT;
   const accessKeyId = process.env.R2_ACCESS_KEY_ID;

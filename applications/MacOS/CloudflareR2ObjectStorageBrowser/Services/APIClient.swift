@@ -322,4 +322,16 @@ class APIClient: ObservableObject {
         let response: ObjectsResponse = try await request(endpoint: components.url!.path + "?" + (components.query ?? ""))
         return response.data
     }
+
+    // MARK: - Presigned URL
+
+    /// Get a presigned URL for an object
+    func getPresignedUrl(bucket: String, key: String, expiresIn: Int = 3600) async throws -> String {
+        let encodedKey = key.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? key
+        var components = URLComponents(string: "/buckets/\(bucket)/objects/\(encodedKey)/presigned-url")!
+        components.queryItems = [URLQueryItem(name: "expiresIn", value: "\(expiresIn)")]
+
+        let response: PresignedUrlResponse = try await request(endpoint: components.url!.path + "?" + (components.query ?? ""))
+        return response.data.url
+    }
 }

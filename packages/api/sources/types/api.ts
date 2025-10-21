@@ -237,6 +237,24 @@ export interface FolderDeleteResponse {
   meta: ResponseMeta;
 }
 
+/**
+ * Presigned URL response
+ */
+export interface PresignedUrlResponse {
+  status: 'ok';
+  data: {
+    /** Object key */
+    key: string;
+    /** Presigned URL for object access */
+    url: string;
+    /** URL expiration time in seconds */
+    expiresIn: number;
+    /** ISO 8601 UTC timestamp when URL expires */
+    expiresAt: string;
+  };
+  meta: ResponseMeta;
+}
+
 // ============================================================================
 // Search Types
 // ============================================================================
@@ -328,6 +346,14 @@ export interface DownloadQuery {
 export interface FolderDeleteQuery {
   /** Prefix/folder path to delete */
   prefix: string;
+}
+
+/**
+ * Query parameters for presigned URL generation
+ */
+export interface PresignedUrlQuery {
+  /** URL expiration time in seconds (default: 3600, max: 604800) */
+  expiresIn?: number;
 }
 
 // ============================================================================

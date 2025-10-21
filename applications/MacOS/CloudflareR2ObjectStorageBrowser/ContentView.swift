@@ -135,6 +135,8 @@ struct ContentView: View {
                             sortColumn: $sortColumn,
                             sortOrder: $sortOrder,
                             isLoading: $isLoadingObjects,
+                            bucketName: selectedBucket?.name,
+                            serverPort: serverManager.serverPort,
                             onFolderOpen: openFolder,
                             onObjectDownload: downloadObject,
                             onObjectDelete: deleteObjects,
