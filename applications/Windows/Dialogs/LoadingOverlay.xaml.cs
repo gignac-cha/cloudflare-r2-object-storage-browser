@@ -89,12 +89,18 @@ namespace CloudflareR2Browser.Dialogs
                 {
                     _progress = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(ProgressValue));
                     OnPropertyChanged(nameof(ProgressText));
                     OnPropertyChanged(nameof(ShowIndeterminate));
                     OnPropertyChanged(nameof(ShowDeterminate));
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the progress value for binding (never null).
+        /// </summary>
+        public double ProgressValue => Progress ?? 0.0;
 
         /// <summary>
         /// Gets the formatted progress text
