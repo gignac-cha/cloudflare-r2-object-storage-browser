@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using CloudflareR2Browser.Models;
 using Microsoft.Extensions.Logging;
 
 namespace CloudflareR2Browser.Services;
@@ -396,25 +397,4 @@ public sealed class NodeServerManager : IDisposable
         _httpClient.Dispose();
         _disposed = true;
     }
-}
-
-/// <summary>
-/// Represents the state of the Node.js server.
-/// </summary>
-public enum ServerState
-{
-    /// <summary>Server is stopped.</summary>
-    Stopped,
-
-    /// <summary>Server is starting up.</summary>
-    Starting,
-
-    /// <summary>Server is running.</summary>
-    Running,
-
-    /// <summary>Server is shutting down.</summary>
-    Stopping,
-
-    /// <summary>Server encountered an error.</summary>
-    Error
 }

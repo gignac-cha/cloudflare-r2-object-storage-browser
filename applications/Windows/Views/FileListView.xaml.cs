@@ -60,7 +60,7 @@ public sealed partial class FileListView : UserControl
     private void FileListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         ViewModel.SelectedObjects.Clear();
-        foreach (var item in FileListView.SelectedItems.Cast<R2Object>())
+        foreach (var item in ObjectListView.SelectedItems.Cast<R2Object>())
         {
             ViewModel.SelectedObjects.Add(item);
         }

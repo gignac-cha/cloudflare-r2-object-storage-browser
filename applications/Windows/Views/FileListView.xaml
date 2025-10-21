@@ -44,7 +44,7 @@
         </StackPanel>
 
         <!-- File/Folder List -->
-        <ListView x:Name="FileListView"
+        <ListView x:Name="ObjectListView"
                   ItemsSource="{x:Bind ViewModel.Objects, Mode=OneWay}"
                   SelectionMode="Extended"
                   IsItemClickEnabled="True"
