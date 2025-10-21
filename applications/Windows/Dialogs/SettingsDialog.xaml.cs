@@ -62,7 +62,7 @@ namespace CloudflareR2Browser.Dialogs
                 // Save credentials using the SaveCommand
                 if (ViewModel.SaveCommand is AsyncRelayCommand saveCommand)
                 {
-                    await saveCommand.ExecuteAsync(null);
+                    await saveCommand.ExecuteAsync();
 
                     // Check if there's an error message
                     if (!string.IsNullOrEmpty(ViewModel.ErrorMessage))
@@ -120,7 +120,7 @@ namespace CloudflareR2Browser.Dialogs
                     // Clear credentials using the ClearCommand
                     if (ViewModel.ClearCommand is AsyncRelayCommand clearCommand)
                     {
-                        await clearCommand.ExecuteAsync(null);
+                        await clearCommand.ExecuteAsync();
                     }
 
                     // Clear the form fields

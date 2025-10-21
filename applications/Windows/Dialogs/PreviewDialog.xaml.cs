@@ -301,8 +301,12 @@ namespace CloudflareR2Browser.Dialogs
                 var savePicker = new FileSavePicker();
 
                 // Initialize with window
-                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
-                WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwnd);
+                var mainWindow = App.Current.MainWindow;
+                if (mainWindow != null)
+                {
+                    var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(mainWindow);
+                    WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwnd);
+                }
 
                 savePicker.SuggestedFileName = _fileName;
                 var extension = Path.GetExtension(_fileName);
