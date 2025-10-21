@@ -52,6 +52,25 @@ export async function registerObjectRoutes(server: FastifyInstance) {
     Querystring: ListObjectsQuery;
   }>('/buckets/:bucket/objects', listObjectsHandler);
 
+  // Search objects by name (register before wildcard routes)
+  server.get<{
+    Params: BucketParams;
+    Querystring: SearchQuery;
+  }>('/buckets/:bucket/search', searchObjectsHandler);
+
+  // Batch delete multiple objects (register before wildcard routes)
+  server.delete<{
+    Params: BucketParams;
+    Body: BatchDeleteBody;
+  }>('/buckets/:bucket/objects/batch', batchDeleteObjectsHandler);
+
+  // Delete folder (all objects with prefix)
+  server.delete<{
+    Params: BucketParams;
+    Querystring: FolderDeleteQuery;
+  }>('/buckets/:bucket/folders', deleteFolderHandler);
+
+  // Wildcard routes must be registered last
   // Get object metadata (no body)
   server.head<{
     Params: ObjectParams;
@@ -72,24 +91,6 @@ export async function registerObjectRoutes(server: FastifyInstance) {
   server.delete<{
     Params: ObjectParams;
   }>('/buckets/:bucket/objects/*', deleteObjectHandler);
-
-  // Batch delete multiple objects
-  server.delete<{
-    Params: BucketParams;
-    Body: BatchDeleteBody;
-  }>('/buckets/:bucket/objects/batch', batchDeleteObjectsHandler);
-
-  // Delete folder (all objects with prefix)
-  server.delete<{
-    Params: BucketParams;
-    Querystring: FolderDeleteQuery;
-  }>('/buckets/:bucket/folders', deleteFolderHandler);
-
-  // Search objects by name
-  server.get<{
-    Params: BucketParams;
-    Querystring: SearchQuery;
-  }>('/buckets/:bucket/search', searchObjectsHandler);
 }
 
 // ============================================================================
