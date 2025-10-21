@@ -38,11 +38,6 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// Gets the current application instance.
-    /// </summary>
-    public new static App Current => (App)Application.Current;
-
-    /// <summary>
     /// Gets the service provider for dependency injection.
     /// </summary>
     public IServiceProvider Services => _serviceProvider ?? throw new InvalidOperationException("Services not initialized");
