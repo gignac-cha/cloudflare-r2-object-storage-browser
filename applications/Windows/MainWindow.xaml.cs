@@ -28,7 +28,11 @@ public sealed partial class MainWindow : Window
         InitializeComponent();
 
         // Set DataContext for {Binding} to work
-        DataContext = this;
+        // Window doesn't have DataContext, so set it on the content
+        if (Content is FrameworkElement rootElement)
+        {
+            rootElement.DataContext = this;
+        }
 
         ConfigureWindow();
         SetupMicaBackdrop();
