@@ -27,6 +27,9 @@ public sealed partial class MainWindow : Window
 
         InitializeComponent();
 
+        // Set DataContext for {Binding} to work
+        DataContext = this;
+
         ConfigureWindow();
         SetupMicaBackdrop();
 

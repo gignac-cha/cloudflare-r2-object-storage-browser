@@ -17,19 +17,19 @@
                 <TextBlock Text="Cloudflare R2 Object Storage Browser"
                            Style="{StaticResource TitleTextBlockStyle}"/>
                 <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                    <Ellipse Width="8" Height="8" Fill="{x:Bind ViewModel.ServerStatusColor, Mode=OneWay}"/>
-                    <TextBlock Text="{x:Bind ViewModel.ServerStatusText, Mode=OneWay}"
+                    <Ellipse Width="8" Height="8" Fill="{Binding ViewModel.ServerStatusColor, Mode=OneWay}"/>
+                    <TextBlock Text="{Binding ViewModel.ServerStatusText, Mode=OneWay}"
                                FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 </StackPanel>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
                 <Button Content="Transfer Queue"
-                        Command="{x:Bind ViewModel.ToggleTransferQueueCommand}"/>
+                        Command="{Binding ViewModel.ToggleTransferQueueCommand}"/>
                 <Button Content="Debug"
-                        Command="{x:Bind ViewModel.ToggleDebugPanelCommand}"/>
+                        Command="{Binding ViewModel.ToggleDebugPanelCommand}"/>
                 <Button Content="Settings"
-                        Command="{x:Bind ViewModel.ShowSettingsCommand}"/>
+                        Command="{Binding ViewModel.ShowSettingsCommand}"/>
             </StackPanel>
         </Grid>
 
@@ -78,7 +78,7 @@
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
                         BorderThickness="0,1,0,0"
-                        Visibility="{x:Bind ViewModel.IsDebugPanelVisible, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                        Visibility="{Binding ViewModel.IsDebugPanelVisible, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                     <TextBlock Text="[Debug Panel View]" Padding="16"/>
                 </Border>
             </Grid>
