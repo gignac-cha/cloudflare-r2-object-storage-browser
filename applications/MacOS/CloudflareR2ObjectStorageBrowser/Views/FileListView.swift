@@ -10,6 +10,8 @@ struct FileListView: View {
     @Binding var sortOrder: SortOrder
     @Binding var isLoading: Bool
 
+    let bucketName: String?
+    let serverPort: Int?
     let onFolderOpen: (String) -> Void
     let onObjectDownload: (R2Object) -> Void
     let onObjectDelete: ([R2Object]) -> Void
@@ -264,7 +266,7 @@ struct FileListView: View {
             NSPasteboard.general.setString(object.key, forType: .string)
         }
         Button("Copy URL") {
-            // TODO: Copy object URL
+            copyPresignedUrl(for: object)
         }
         Divider()
         Button("Get Info") {
@@ -344,6 +346,45 @@ struct FileListView: View {
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: date, relativeTo: Date())
     }
+
+    private func copyPresignedUrl(for object: R2Object) {
+        guard let bucket = bucketName, let port = serverPort else {
+            showAlert(title: "Error", message: "Server or bucket information not available")
+            return
+        }
+
+        Task {
+            do {
+                let apiClient = APIClient(serverPort: port)
+                let url = try await apiClient.getPresignedUrl(
+                    bucket: bucket,
+                    key: object.key,
+                    expiresIn: 3600 // 1 hour
+                )
+
+                await MainActor.run {
+                    NSPasteboard.general.clearContents()
+                    NSPasteboard.general.setString(url, forType: .string)
+
+                    // Show success notification
+                    showAlert(title: "URL Copied", message: "Presigned URL has been copied to clipboard (valid for 1 hour)")
+                }
+            } catch {
+                await MainActor.run {
+                    showAlert(title: "Copy URL Failed", message: "Failed to generate presigned URL: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = NSAlert()
+        alert.messageText = title
+        alert.informativeText = message
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+    }
 }
 
 // MARK: - Previews
@@ -356,6 +397,8 @@ struct FileListView: View {
         sortColumn: .constant(.name),
         sortOrder: .constant(.ascending),
         isLoading: .constant(false),
+        bucketName: "test-bucket",
+        serverPort: 3000,
         onFolderOpen: { _ in },
         onObjectDownload: { _ in },
         onObjectDelete: { _ in },
@@ -373,6 +416,8 @@ struct FileListView: View {
         sortColumn: .constant(.name),
         sortOrder: .constant(.ascending),
         isLoading: .constant(true),
+        bucketName: "test-bucket",
+        serverPort: 3000,
         onFolderOpen: { _ in },
         onObjectDownload: { _ in },
         onObjectDelete: { _ in },
@@ -394,6 +439,8 @@ struct FileListView: View {
         sortColumn: .constant(.name),
         sortOrder: .constant(.ascending),
         isLoading: .constant(false),
+        bucketName: "test-bucket",
+        serverPort: 3000,
         onFolderOpen: { _ in },
         onObjectDownload: { _ in },
         onObjectDelete: { _ in },

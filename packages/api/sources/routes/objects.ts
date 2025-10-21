@@ -20,6 +20,7 @@ import type {
   SearchQuery,
   DownloadQuery,
   FolderDeleteQuery,
+  PresignedUrlQuery,
   BatchDeleteBody,
   S3Object,
   SearchResult,
@@ -33,6 +34,7 @@ import {
   DeleteObjectCommand,
   DeleteObjectsCommand,
 } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { r2Client } from '../r2-client.ts';
 import { mapS3Error, createMissingQueryError, createMissingParamError, createInvalidParamError, createInvalidKeyError } from '../utils/errors.ts';
 import {
@@ -90,6 +92,12 @@ export async function registerObjectRoutes(server: FastifyInstance) {
     Params: BucketParams;
     Querystring: SearchQuery;
   }>('/buckets/:bucket/search', searchObjectsHandler);
+
+  // Generate presigned URL for object
+  server.get<{
+    Params: ObjectParams;
+    Querystring: PresignedUrlQuery;
+  }>('/buckets/:bucket/objects/*/presigned-url', getPresignedUrlHandler);
 }
 
 // ============================================================================
@@ -791,6 +799,75 @@ async function searchObjectsHandler(
   }
 }
 
+/**
+ * Generate presigned URL for object download
+ * GET /buckets/:bucket/objects/{key}/presigned-url
+ */
+async function getPresignedUrlHandler(
+  request: FastifyRequest<{
+    Params: ObjectParams;
+    Querystring: PresignedUrlQuery;
+  }>,
+  reply: FastifyReply
+) {
+  try {
+    const { bucket } = request.params;
+    const key = extractObjectKey(request.url);
+    const { expiresIn = 3600 } = request.query;
+
+    if (!bucket) {
+      throw createMissingParamError('bucket');
+    }
+    if (!key) {
+      throw createMissingParamError('key');
+    }
+
+    // Validate expiresIn (max 7 days = 604800 seconds)
+    if (expiresIn < 1 || expiresIn > 604800) {
+      throw createInvalidParamError(
+        'expiresIn',
+        'number between 1 and 604800',
+        expiresIn
+      );
+    }
+
+    // Create GetObjectCommand for presigned URL
+    const command = new GetObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    });
+
+    // Generate presigned URL
+    const url = await getSignedUrl(r2Client, command, {
+      expiresIn,
+    });
+
+    // Calculate expiration timestamp
+    const expiresAt = new Date(Date.now() + expiresIn * 1000).toISOString();
+
+    return createSuccessResponse(reply, 200, {
+      key,
+      url,
+      expiresIn,
+      expiresAt,
+    });
+  } catch (error) {
+    const { bucket } = request.params;
+    const key = extractObjectKey(request.url);
+    const appError = mapS3Error(error, {
+      bucketName: bucket,
+      objectKey: key,
+    });
+    return createErrorResponse(
+      reply,
+      appError.statusCode,
+      appError.code,
+      appError.message,
+      appError.details
+    );
+  }
+}
+
 // ============================================================================
 // Utility Functions
 // ============================================================================
@@ -804,7 +881,8 @@ async function searchObjectsHandler(
 function extractObjectKey(url: string): string {
   // URL format: /buckets/{bucket}/objects/{key}
   // Extract everything after /objects/
-  const match = url.match(/\/objects\/(.+?)(?:\?|$)/);
+  // Handle both normal object paths and presigned-url paths
+  const match = url.match(/\/objects\/(.+?)(?:\/presigned-url)?(?:\?|$)/);
   if (!match) {
     return '';
   }

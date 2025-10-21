@@ -173,6 +173,19 @@ struct ObjectDeleteResponse: Codable {
     let meta: ResponseMeta
 }
 
+struct PresignedUrlData: Codable {
+    let key: String
+    let url: String
+    let expiresIn: Int
+    let expiresAt: String
+}
+
+struct PresignedUrlResponse: Codable {
+    let status: String
+    let data: PresignedUrlData
+    let meta: ResponseMeta
+}
+
 // MARK: - Common Prefix (Folder)
 
 struct CommonPrefix: Identifiable, Equatable {
