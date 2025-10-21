@@ -39,7 +39,7 @@ namespace CloudflareR2Browser.Dialogs
             private set => _unsupportedMessage = value;
         }
 
-        public PreviewDialog(string fileUrl, string fileName, string contentType = null, long? fileSize = null)
+        public PreviewDialog(string fileUrl, string fileName, string? contentType = null, long? fileSize = null)
         {
             this.InitializeComponent();
 
@@ -92,7 +92,7 @@ namespace CloudflareR2Browser.Dialogs
         /// <summary>
         /// Load image preview
         /// </summary>
-        private async Task LoadImagePreviewAsync()
+        private Task LoadImagePreviewAsync()
         {
             try
             {
@@ -106,6 +106,8 @@ namespace CloudflareR2Browser.Dialogs
             {
                 ShowError($"Failed to load image: {ex.Message}");
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -138,7 +140,7 @@ namespace CloudflareR2Browser.Dialogs
         /// <summary>
         /// Load PDF preview using WebView2
         /// </summary>
-        private async Task LoadPdfPreviewAsync()
+        private Task LoadPdfPreviewAsync()
         {
             try
             {
@@ -162,11 +164,13 @@ namespace CloudflareR2Browser.Dialogs
 
                 */
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 WebViewUnavailablePanel.Visibility = Visibility.Visible;
                 ShowPanel(WebViewBorder);
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

@@ -13,7 +13,7 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <Nullable>enable</Nullable>
     <LangVersion>12</LangVersion>
-    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+    <!-- ApplicationIcon: Create Assets\AppIcon.ico when ready -->
   </PropertyGroup>
 
   <ItemGroup>

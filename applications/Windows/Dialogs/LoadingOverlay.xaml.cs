@@ -14,14 +14,14 @@ namespace CloudflareR2Browser.Dialogs
     public sealed partial class LoadingOverlay : UserControl, INotifyPropertyChanged
     {
         private bool _isVisible;
-        private string _message;
-        private string _subMessage;
+        private string _message = string.Empty;
+        private string _subMessage = string.Empty;
         private double? _progress;
         private bool _isCancellable;
-        private ObservableCollection<string> _details;
+        private ObservableCollection<string> _details = new();
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler CancelRequested;
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? CancelRequested;
 
         /// <summary>
         /// Gets or sets whether the overlay is visible
@@ -267,7 +267,7 @@ namespace CloudflareR2Browser.Dialogs
             CancelRequested?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

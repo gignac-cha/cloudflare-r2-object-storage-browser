@@ -26,7 +26,7 @@ public sealed class TransferManagerViewModel : ObservableObject, IDisposable
 
     private int _maxConcurrentUploads = 3;
     private int _maxConcurrentDownloads = 5;
-    private bool _isProcessing;
+    // private bool _isProcessing; // Reserved for future use
     private bool _disposed;
 
     private readonly SemaphoreSlim _uploadSemaphore;
@@ -569,12 +569,12 @@ public sealed class TransferManagerViewModel : ObservableObject, IDisposable
         return task?.CanCancel ?? false;
     }
 
-    private async Task RetryTransferAsync(Guid taskId)
+    private Task RetryTransferAsync(Guid taskId)
     {
         var task = FailedTasks.FirstOrDefault(t => t.Id == taskId);
         if (task == null)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         _logger.LogInformation("Retrying task {TaskId}", taskId);
@@ -587,6 +587,8 @@ public sealed class TransferManagerViewModel : ObservableObject, IDisposable
         task.CompletedAt = null;
 
         ActiveTasks.Add(task);
+
+        return Task.CompletedTask;
     }
 
     private bool CanRetryTransfer(Guid taskId)

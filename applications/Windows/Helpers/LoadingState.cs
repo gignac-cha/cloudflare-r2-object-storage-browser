@@ -28,8 +28,22 @@ public abstract record LoadingState<T>
     /// <summary>
     /// Represents the failed state with error information.
     /// </summary>
-    /// <param name="Error">The exception that caused the failure</param>
-    public record Failed(Exception Error) : LoadingState<T>;
+    public record Failed : LoadingState<T>
+    {
+        /// <summary>
+        /// Gets the exception that caused the failure.
+        /// </summary>
+        public Exception Error { get; init; }
+
+        /// <summary>
+        /// Initializes a new instance of the Failed state.
+        /// </summary>
+        /// <param name="error">The exception that caused the failure</param>
+        public Failed(Exception error)
+        {
+            Error = error;
+        }
+    }
 
     /// <summary>
     /// Gets a value indicating whether the state is idle.

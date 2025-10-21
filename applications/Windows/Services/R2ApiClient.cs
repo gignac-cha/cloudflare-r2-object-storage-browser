@@ -127,7 +127,7 @@ public sealed class R2ApiClient : IDisposable
                 return new ListObjectsResult
                 {
                     Objects = response.Data ?? new List<R2Object>(),
-                    Pagination = response.Pagination,
+                    Pagination = response.Pagination ?? new PaginationInfo(),
                     CommonPrefixes = response.Pagination?.CommonPrefixes ?? new List<string>()
                 };
             }
