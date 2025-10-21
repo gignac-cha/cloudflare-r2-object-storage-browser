@@ -6,12 +6,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = join(__dirname, '..');
 
+// Output directory can be customized via OUTPUT_DIR environment variable
+const outputDir = process.env.OUTPUT_DIR || join(projectRoot, 'outputs');
+const outputFile = join(outputDir, 'server.js');
+
 // Build configuration - single bundle with all code
 console.log(`📦 Building server...`);
+console.log(`   Output: ${outputFile}`);
 
 await build({
   entryPoints: [join(projectRoot, 'sources/server.ts')],
-  outfile: join(projectRoot, 'outputs/server.js'),
+  outfile: outputFile,
   bundle: true,
   platform: 'node',
   target: 'esnext',
@@ -22,6 +27,6 @@ await build({
   // Don't use 'external: routes' - bundle everything from sources/
 });
 
-console.log(`   ✅ server built successfully`);
+console.log(`   ✅ server built successfully at ${outputFile}`);
 
 console.log('\n✨ All builds completed successfully!');
