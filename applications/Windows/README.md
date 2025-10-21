@@ -208,30 +208,67 @@ Before running the application, you need R2 API credentials from Cloudflare:
 
 ## Building from Source
 
-### Quick Start
+### Quick Start (Recommended)
+
+Using pnpm workspace commands from project root:
 
 ```bash
 # Clone repository
 git clone https://github.com/your-org/cloudflare-r2-object-storage-browser.git
 cd cloudflare-r2-object-storage-browser
 
-# Navigate to Windows application
-cd applications/Windows
+# Install all dependencies (including cross-env)
+pnpm install
 
-# Build API server (first time only)
-cd ../../packages/api
-npm install
-npm run build
+# Build Windows application (automatically builds API server first)
+pnpm run build:windows
+
+# Or build for Release
+pnpm run build:windows:release
+```
+
+The build script will:
+1. Build packages/api/outputs/server.cjs
+2. Copy server.cjs to applications/Windows/Resources/
+3. Build the Windows application with dotnet
+
+### Manual Build (Alternative)
+
+If you prefer to build manually:
+
+```bash
+# Navigate to project root
+cd cloudflare-r2-object-storage-browser
+
+# Build API server with custom output location
+cd packages/api
+OUTPUT_DIR=../../applications/Windows/Resources node scripts/build.ts
+
+# Build Windows application
 cd ../../applications/Windows
-
-# Restore NuGet packages
 dotnet restore
-
-# Build application
 dotnet build --configuration Debug
 
 # Run application
 dotnet run
+```
+
+### Build from Windows Directory
+
+If you're already in the Windows application directory:
+
+```bash
+# From applications/Windows directory
+cd applications/Windows
+
+# Install Node dependencies for build scripts
+pnpm install
+
+# Build (automatically builds API server to Resources/)
+pnpm run build
+
+# Or build for Release
+pnpm run build:release
 ```
 
 ### Using Visual Studio

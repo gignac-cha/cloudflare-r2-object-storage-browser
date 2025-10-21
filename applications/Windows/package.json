@@ -1,0 +1,28 @@
+{
+  "name": "@cloudflare-r2-object-storage-browser/windows",
+  "version": "1.0.0",
+  "description": "Windows WinUI 3 application for Cloudflare R2 Object Storage Browser",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prebuild": "cross-env OUTPUT_DIR=applications/Windows/Resources node ../../packages/api/scripts/build.ts",
+    "build": "pnpm run prebuild && dotnet build CloudflareR2Browser.csproj -c Debug",
+    "build:release": "pnpm run prebuild && dotnet build CloudflareR2Browser.csproj -c Release",
+    "rebuild": "dotnet build CloudflareR2Browser.csproj -c Debug --no-incremental",
+    "clean": "dotnet clean CloudflareR2Browser.csproj",
+    "restore": "dotnet restore CloudflareR2Browser.csproj",
+    "publish": "pnpm run prebuild && dotnet publish CloudflareR2Browser.csproj -c Release -r win-x64 --self-contained",
+    "publish:arm64": "pnpm run prebuild && dotnet publish CloudflareR2Browser.csproj -c Release -r win-arm64 --self-contained"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
+  "keywords": [
+    "cloudflare",
+    "r2",
+    "winui3",
+    "windows"
+  ],
+  "author": "",
+  "license": "ISC"
+}

@@ -8,6 +8,8 @@
     "build:api": "turbo run build --filter=@cloudflare-r2-object-storage-browser/api",
     "build:mac": "turbo run build --filter=@cloudflare-r2-object-storage-browser/mac",
     "build:electron": "turbo run build --filter=@cloudflare-r2-object-storage-browser/electron",
+    "build:windows": "pnpm --filter=@cloudflare-r2-object-storage-browser/windows run build",
+    "build:windows:release": "pnpm --filter=@cloudflare-r2-object-storage-browser/windows run build:release",
     "clean": "turbo run clean",
     "start:mac": "turbo run start --filter=@cloudflare-r2-object-storage-browser/mac",
     "start:electron": "turbo run start --filter=@cloudflare-r2-object-storage-browser/electron",
