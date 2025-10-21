@@ -8,12 +8,10 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- TODO: Uncomment when resource files are created
                 <ResourceDictionary Source="Resources/Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/ListStyles.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/ColorBrushes.xaml"/>
                 <ResourceDictionary Source="Resources/Icons/SegoeIcons.xaml"/>
-                -->
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Converters -->
