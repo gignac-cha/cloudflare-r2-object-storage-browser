@@ -137,7 +137,7 @@
     <x:String x:Key="HelpIcon">&#xE897;</x:String>
     <x:String x:Key="LinkIcon">&#xE71B;</x:String>
     <x:String x:Key="UnlinkIcon">&#xE8D9;</x:String>
-    <x:String x="AttachIcon">&#xE723;</x:String>
+    <x:String x:Key="AttachIcon">&#xE723;</x:String>
     <x:String x:Key="PinIcon">&#xE718;</x:String>
     <x:String x:Key="UnpinIcon">&#xE77A;</x:String>
     <x:String x:Key="FavoriteIcon">&#xE734;</x:String>
