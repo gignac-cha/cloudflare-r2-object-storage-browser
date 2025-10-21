@@ -193,7 +193,7 @@ public sealed class MainViewModel : ObservableObject, IDisposable
             {
                 _logger.LogError("Failed to start server");
                 ServerStatusText = "Server failed to start";
-                ServerStatusColor = Colors.Red;
+                ServerStatusColor = new SolidColorBrush(Colors.Red);
                 return;
             }
 
@@ -203,7 +203,7 @@ public sealed class MainViewModel : ObservableObject, IDisposable
         {
             _logger.LogError(ex, "Failed to initialize application");
             ServerStatusText = $"Error: {ex.Message}";
-            ServerStatusColor = Colors.Red;
+            ServerStatusColor = new SolidColorBrush(Colors.Red);
         }
     }
 
