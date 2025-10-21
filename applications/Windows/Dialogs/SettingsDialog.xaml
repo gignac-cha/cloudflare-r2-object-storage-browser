@@ -89,28 +89,6 @@
                 </Border>
             </StackPanel>
 
-            <!-- Advanced Section (Optional) -->
-            <StackPanel Spacing="12">
-                <TextBlock
-                    Text="Advanced"
-                    Style="{StaticResource SubtitleTextBlockStyle}"
-                    FontWeight="SemiBold" />
-
-                <StackPanel Spacing="4">
-                    <TextBlock
-                        Text="Custom Endpoint (Optional)"
-                        FontWeight="SemiBold" />
-                    <TextBox
-                        x:Name="EndpointTextBox"
-                        PlaceholderText="https://your-account-id.r2.cloudflarestorage.com"
-                        Text="{x:Bind ViewModel.CustomEndpoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock
-                        Text="Leave empty to use default R2 endpoint"
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Style="{StaticResource CaptionTextBlockStyle}" />
-                </StackPanel>
-            </StackPanel>
-
             <!-- Clear All Button -->
             <StackPanel Spacing="12">
                 <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" />

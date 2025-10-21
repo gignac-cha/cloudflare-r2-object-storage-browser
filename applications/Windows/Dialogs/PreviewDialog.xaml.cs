@@ -2,8 +2,10 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -13,7 +15,7 @@ namespace CloudflareR2Browser.Dialogs
     /// <summary>
     /// Preview dialog for displaying file contents
     /// </summary>
-    public sealed partial class PreviewDialog : ContentDialog
+    public sealed partial class PreviewDialog : ContentDialog, INotifyPropertyChanged
     {
         private string _fileUrl;
         private string _fileName;
@@ -21,22 +23,50 @@ namespace CloudflareR2Browser.Dialogs
         private string _unsupportedMessage;
         private string _contentType;
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public string FileName
         {
             get => _fileName;
-            private set => _fileName = value;
+            private set
+            {
+                if (_fileName != value)
+                {
+                    _fileName = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public string FileInfo
         {
             get => _fileInfo;
-            private set => _fileInfo = value;
+            private set
+            {
+                if (_fileInfo != value)
+                {
+                    _fileInfo = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public string UnsupportedMessage
         {
             get => _unsupportedMessage;
-            private set => _unsupportedMessage = value;
+            private set
+            {
+                if (_unsupportedMessage != value)
+                {
+                    _unsupportedMessage = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public PreviewDialog(string fileUrl, string fileName, string? contentType = null, long? fileSize = null)
